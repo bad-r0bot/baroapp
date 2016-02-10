@@ -40,7 +40,10 @@ public class Overzichtscherm extends AppCompatActivity implements OnClickListene
 
     private ListView list;
     private String urljson;
-
+    /**
+     * ATTENTION: This was auto-generated to implement the App Indexing API.
+     * See https://g.co/AppIndexing/AndroidStudio for more information.
+     */
     private GoogleApiClient client;
 
     @Override
@@ -48,13 +51,15 @@ public class Overzichtscherm extends AppCompatActivity implements OnClickListene
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_overzichtscherm);
 
+
         urljson = "http://www.fuujokan.nl/subject_list.json";
 
         ListView list = (ListView) findViewById(R.id.vakkenlijst);
 
         vakkenlijst(list);
         Log.d("oncreate", "vakkenlijst is creating");
-
+        // ATTENTION: This was auto-generated to implement the App Indexing API.
+        // See https://g.co/AppIndexing/AndroidStudio for more information.
         client = new GoogleApiClient.Builder(this).addApi(AppIndex.API).build();
     }
 
@@ -137,6 +142,7 @@ public class Overzichtscherm extends AppCompatActivity implements OnClickListene
 
         HttpClient client = new DefaultHttpClient();
         HttpGet request = new HttpGet(urljson);
+        // replace with your url
 
         HttpResponse response;
         try {
@@ -153,8 +159,14 @@ public class Overzichtscherm extends AppCompatActivity implements OnClickListene
 
     }
 
-    private JSONObject readJsonFromUrl(String urljson) throws IOException, JSONException {
-        InputStream is = new URL(urljson).openStream();
+    private JSONObject readJsonFromUrl(String url) throws IOException, JSONException {
+        InputStream is = null;
+
+        NetworkThread networkThread= new NetworkThread(is);
+        networkThread.start();
+
+        if(is != null){
+
         try {
             BufferedReader rd = new BufferedReader(new InputStreamReader(is, Charset.forName("UTF-8")));
             String jsonText = readAll(rd);
@@ -162,7 +174,11 @@ public class Overzichtscherm extends AppCompatActivity implements OnClickListene
             return json;
         } finally {
             is.close();
+        }}
+        else{
+            Log.d("Thread madness", "Thread didnt fill empty inputstream");
         }
+        return null;
     }
 
     private void vakkenlijst(View v) {
@@ -176,6 +192,22 @@ public class Overzichtscherm extends AppCompatActivity implements OnClickListene
             e.printStackTrace();
 
             Log.d("AAAAGH", "JSONException while loading list\n" + e.getMessage());
+        }
+    }
+
+    class NetworkThread extends Thread {
+
+        private InputStream is = null;
+        public NetworkThread(InputStream is){
+            this.is = is;
+        }
+
+        public void run(){
+            try {
+                is = new URL(urljson).openStream();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
     }
 
