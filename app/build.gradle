@@ -1,15 +1,15 @@
 apply plugin: 'com.android.application'
 
 android {
-    compileSdkVersion 23
-    buildToolsVersion
+    compileSdkVersion 21
+    buildToolsVersion '23.0.2'
 
     useLibrary 'org.apache.http.legacy'
 
     defaultConfig {
         applicationId "com.baromet.j.baroapp"
         minSdkVersion 19
-        targetSdkVersion 22
+        targetSdkVersion 23
         versionCode 1
         versionName "1.0"
     }
@@ -20,8 +20,6 @@ android {
         }
     }
 }
-
-
 
 dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
