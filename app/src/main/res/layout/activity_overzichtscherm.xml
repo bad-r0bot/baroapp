@@ -50,16 +50,6 @@
             android:enabled="false"
             android:textSize="10dp" />
 
-        <Button
-            android:layout_width="77dp"
-            android:layout_height="70dp"
-            android:text="Vakdetail"
-            android:id="@+id/button16"
-            android:layout_margin="5dp"
-            android:layout_gravity="center"
-            android:clickable="true"
-            android:onClick="clickVakdetailscherm"
-            android:textSize="10dp" />
     </TableRow>
 
     <FrameLayout

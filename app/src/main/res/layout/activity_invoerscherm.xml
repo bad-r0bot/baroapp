@@ -54,13 +54,21 @@
             android:layout_margin="5dp"
             android:nestedScrollingEnabled="false"
             android:onClick="clickVakdetailscherm"
-            android:clickable="true"
-            android:layout_gravity="center"/>
+            android:clickable="true" />
     </TableRow>
 
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@+id/tableRow"
-        android:layout_alignParentStart="true" />
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/tableRow2">
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/scrollView"
+            android:layout_row="0"
+            android:layout_column="0" />
+
+    </FrameLayout>
 </RelativeLayout>

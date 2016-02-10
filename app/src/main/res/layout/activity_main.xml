@@ -15,10 +15,11 @@
         android:layout_alignParentTop="true"
         android:layout_alignParentStart="true"
         android:layout_alignParentEnd="true"
-        android:id="@+id/tableRow">
+        android:id="@+id/tableRow"
+        android:weightSum="1">
 
         <Button
-            android:layout_width="77dp"
+            android:layout_width="wrap_content"
             android:layout_height="70dp"
             android:text="Hoofdscherm"
             android:id="@+id/button"
@@ -27,17 +28,18 @@
             android:enabled="false" />
 
         <Button
-            android:layout_width="77dp"
+            android:layout_width="wrap_content"
             android:layout_height="70dp"
             android:text="Invoeren"
             android:id="@+id/button2"
             android:layout_margin="5dp"
             android:clickable="true"
             android:onClick="clickInvoerscherm"
-            android:layout_gravity="center" />
+            android:layout_gravity="center"
+            android:layout_weight="0.40" />
 
         <Button
-            android:layout_width="77dp"
+            android:layout_width="wrap_content"
             android:layout_height="70dp"
             android:text="Overzicht"
             android:id="@+id/button3"
@@ -46,34 +48,43 @@
             android:clickable="true"
             android:layout_gravity="center" />
 
-        <Button
-            android:layout_width="77dp"
-            android:layout_height="70dp"
-            android:text="Vakdetail"
-            android:id="@+id/button4"
-            android:layout_margin="5dp"
-            android:onClick="clickVakdetailscherm"
-            android:clickable="true"
-            android:layout_gravity="center" />
-
     </TableRow>
 
-    <FrameLayout
+    <TableLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@+id/tableRow"
         android:layout_alignParentStart="true">
 
-        <LinearLayout
-            android:orientation="vertical"
+        <TableRow
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_gravity="left|top">
+            android:layout_height="match_parent">
 
             <ImageView
+                android:layout_width="60dp"
+                android:layout_height="63dp"
+                android:id="@+id/imageView"
+                android:layout_column="1"
+                android:layout_span="1"
+                android:src="@drawable/logo_hs" />
+
+            <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:id="@+id/imageView" />
-        </LinearLayout>
-    </FrameLayout>
+                android:text="current year"
+                android:id="@+id/currentYear"
+                android:layout_column="3" />
+
+            <EditText
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:inputType="textPersonName"
+                android:text="Naam"
+                android:ems="10"
+                android:id="@+id/editText"
+                android:layout_column="8"
+                android:editable="true" />
+        </TableRow>
+    </TableLayout>
+
 </RelativeLayout>

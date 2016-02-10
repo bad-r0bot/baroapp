@@ -5,6 +5,9 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.TextView;
+
+import java.util.Calendar;
 
 public class Hoofdscherm extends AppCompatActivity implements OnClickListener {
 
@@ -13,7 +16,16 @@ public class Hoofdscherm extends AppCompatActivity implements OnClickListener {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        //
+        TextView currentYear = (TextView) findViewById(R.id.currentYear);
+
+
+        final Calendar c = Calendar.getInstance();
+        int yy = c.get(Calendar.YEAR);
+
+        // set current date into textview
+        currentYear.setText(new StringBuilder()
+                // Current year-1 to current year. eg 2015-2016
+                .append(yy-1).append(" ").append("-").append(yy));
     }
 
     public void clickHoofdscherm(View v)
