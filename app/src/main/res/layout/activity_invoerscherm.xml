@@ -19,31 +19,43 @@
 
         <Button
             android:layout_width="77dp"
-            android:layout_height="wrap_content"
-            android:text="New Button"
+            android:layout_height="70dp"
+            android:text="Hoofdscherm"
             android:id="@+id/button5"
-            android:layout_margin="5dp" />
+            android:layout_margin="5dp"
+            android:onClick="clickHoofdscherm"
+            android:clickable="true"
+            android:layout_gravity="center"/>
 
         <Button
             android:layout_width="77dp"
-            android:layout_height="wrap_content"
-            android:text="New Button"
+            android:layout_height="70dp"
+            android:text="Invoeren"
             android:id="@+id/button6"
-            android:layout_margin="5dp" />
+            android:layout_margin="5dp"
+            android:layout_gravity="center"
+            android:enabled="false" />
 
         <Button
             android:layout_width="77dp"
-            android:layout_height="wrap_content"
-            android:text="New Button"
+            android:layout_height="70dp"
+            android:text="Overzicht"
             android:id="@+id/button7"
-            android:layout_margin="5dp" />
+            android:layout_margin="5dp"
+            android:onClick="clickOverzichtscherm"
+            android:clickable="true"
+            android:layout_gravity="center"/>
 
         <Button
             android:layout_width="77dp"
-            android:layout_height="wrap_content"
-            android:text="New Button"
+            android:layout_height="70dp"
+            android:text="Vakdetail"
             android:id="@+id/button8"
-            android:layout_margin="5dp" />
+            android:layout_margin="5dp"
+            android:nestedScrollingEnabled="false"
+            android:onClick="clickVakdetailscherm"
+            android:clickable="true"
+            android:layout_gravity="center"/>
     </TableRow>
 
     <FrameLayout
