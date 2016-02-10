@@ -1,8 +1,8 @@
 apply plugin: 'com.android.application'
 
 android {
-    compileSdkVersion 21
-    buildToolsVersion '23.0.2'
+    compileSdkVersion 23
+    buildToolsVersion "23.0.2"
 
     useLibrary 'org.apache.http.legacy'
 
@@ -22,11 +22,8 @@ android {
 }
 
 dependencies {
-    compile fileTree(include: ['*.jar'], dir: 'libs')
+    compile fileTree(dir: 'libs', include: ['*.jar'])
     testCompile 'junit:junit:4.12'
     compile 'com.android.support:appcompat-v7:23.1.1'
-    compile 'org.json:json:20151123'
-    compile 'org.apache.httpcomponents:httpcomponents-client:4.5.1'
-    compile 'org.apache.httpcomponents:httpclient-android:4.3.5.1'
-    compile 'org.apache.httpcomponents:httpcore:4.4.4'
+    compile 'com.google.android.gms:play-services-appindexing:8.1.0'
 }
