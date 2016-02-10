@@ -54,7 +54,6 @@ public class Overzichtscherm extends AppCompatActivity implements OnClickListene
 
         urljson = "http://www.fuujokan.nl/subject_list.json";
 
-        ListView list = (ListView) findViewById(R.id.vakkenlijst);
 
         vakkenlijst(list);
         Log.d("oncreate", "vakkenlijst is creating");
@@ -163,7 +162,7 @@ public class Overzichtscherm extends AppCompatActivity implements OnClickListene
         InputStream is = null;
 
         NetworkThread networkThread= new NetworkThread(is);
-        networkThread.start();
+        networkThread.execute();
 
         if(is != null){
 
@@ -183,6 +182,8 @@ public class Overzichtscherm extends AppCompatActivity implements OnClickListene
 
     private void vakkenlijst(View v) {
         try {
+
+            ListView list = (ListView) findViewById(R.id.vakkenlijst);
             list.setAdapter(new JsonListAdapter(readJsonFromUrl(urljson)));
             Log.d("setAdapter", "Setting adapter through urljson");
         } catch (IOException e) {
@@ -195,7 +196,7 @@ public class Overzichtscherm extends AppCompatActivity implements OnClickListene
         }
     }
 
-    class NetworkThread extends Thread {
+    class NetworkThread extends AsyncTask<String, Void, Boolean> {
 
         private InputStream is = null;
         public NetworkThread(InputStream is){
@@ -203,11 +204,17 @@ public class Overzichtscherm extends AppCompatActivity implements OnClickListene
         }
 
         public void run(){
+
+        }
+
+        @Override
+        protected Boolean doInBackground(String... params) {
             try {
                 is = new URL(urljson).openStream();
             } catch (IOException e) {
                 e.printStackTrace();
             }
+            return null;
         }
     }
 
