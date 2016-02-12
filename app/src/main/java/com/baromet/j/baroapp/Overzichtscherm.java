@@ -54,20 +54,19 @@ public class Overzichtscherm extends AppCompatActivity implements OnClickListene
 
         urljson = "http://www.fuujokan.nl/subject_lijst.json";
 
-
-
         //vakkenlijst(list);
-        Log.d("oncreate", "vakkenlijst is creating");
+        //Log.d("oncreate", "vakkenlijst is creating");
+
+        new UpdateTask().execute(); //run updatetask
+
     }
 
+    private class UpdateTask extends AsyncTask<String, Void ,JSONObject> {
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
 
-    private class UpdateTask extends AsyncTask<String, String,String> {
-        protected String doInBackground(String urljson) {
-            protected void onPreExecute();{
-                super.onPreExecute();
-
-                progressDialog = ProgressDialog.show(Overzichtscherm.this,  "", "");
-            }
+            progressDialog = ProgressDialog.show(Overzichtscherm.this,  "", "");
         }
 
         @Override
@@ -93,9 +92,12 @@ public class Overzichtscherm extends AppCompatActivity implements OnClickListene
 
                 return new JSONObject(response);
 
-            } catch (Exception ex) {
+            } catch (Exception e) {
 
-                ex.printStackTrace();
+///////////////////////////////////////
+                //Hier loopt hij vast.
+                e.printStackTrace();
+                Log.d("AAAAGH", "Exceptopn\n" + e.getMessage());
 
             }
 
@@ -111,7 +113,7 @@ public class Overzichtscherm extends AppCompatActivity implements OnClickListene
 
         }
     }
-
+/*
     private void vakkenlijst (View v){
         try {
             list.setAdapter(new JsonListAdapter(readJsonFromUrl(urljson)));
@@ -125,7 +127,7 @@ public class Overzichtscherm extends AppCompatActivity implements OnClickListene
         }
 
     }
-
+*/
 
     public void clickHoofdscherm(View v) {
         //Go to hoofdscherm
