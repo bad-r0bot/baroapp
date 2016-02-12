@@ -37,6 +37,7 @@ public class Overzichtscherm extends AppCompatActivity implements OnClickListene
 
     private ListView list;
     private String urljson;
+    private Array
     private GoogleApiClient client;
 
     @Override
@@ -102,7 +103,7 @@ public class Overzichtscherm extends AppCompatActivity implements OnClickListene
             try {
                 // Getting Array of albums
 
-                albums = json.getJSONArray(TAG_ALBUMS);
+                vakkenlijst = json.getJSONArray(TAG_ALBUMS);
                 sngs=json.getJSONArray(TAG_SONGS);
                 // looping through All albums
 
