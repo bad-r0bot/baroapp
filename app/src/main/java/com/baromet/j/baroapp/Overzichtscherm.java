@@ -1,5 +1,6 @@
 package com.baromet.j.baroapp;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.AsyncTask;
@@ -9,6 +10,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ListView;
+import android.app.ProgressDialog;
 
 import com.google.android.gms.appindexing.Action;
 import com.google.android.gms.appindexing.AppIndex;
@@ -39,22 +41,29 @@ public class Overzichtscherm extends AppCompatActivity implements OnClickListene
     private ListView list;
     private String urljson;
     private GoogleApiClient client;
+    private ProgressDialog progressDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_overzichtscherm);
 
-
         urljson = "http://www.fuujokan.nl/subject_lijst.json";
 
 
-        vakkenlijst(list);
+
+        //vakkenlijst(list);
         Log.d("oncreate", "vakkenlijst is creating");
     }
 
+
     private class UpdateTask extends AsyncTask<String, String,String> {
         protected String doInBackground(String urljson) {
+            protected void onPreExecute();{
+                super.onPreExecute();
+
+                progressDialog = ProgressDialog.show(Overzichtscherm.this,  "", "");
+            }
 
         DefaultHttpClient httpClient = new DefaultHttpClient();
         HttpPost httpPost = new HttpPost(urljson);
@@ -71,23 +80,14 @@ public class Overzichtscherm extends AppCompatActivity implements OnClickListene
                     InputStream is = httpEntity.getContent();
                 } catch (IOException e) {
                     e.printStackTrace();
-
                 }
-
             return null;
-
         }
 
-
-
-            @Override
-
+    @Override
     protected String doInBackground(String... params) {
-
             return null;
-
         }
-
     }
 
 
