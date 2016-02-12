@@ -14,7 +14,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Created by Obb on 10/02/2016.
+ * Created by Jim on 10/02/2016.
  */
 public class JsonListAdapter implements ListAdapter{
 
@@ -23,6 +23,8 @@ public class JsonListAdapter implements ListAdapter{
     public JsonListAdapter(JSONObject json){
         this.json = json;
     }
+
+
 
     @Override
     public boolean areAllItemsEnabled() {

@@ -11,6 +11,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ListView;
 import android.app.ProgressDialog;
+import android.widget.Toast;
 
 import com.google.android.gms.appindexing.Action;
 import com.google.android.gms.appindexing.AppIndex;
@@ -23,6 +24,8 @@ import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.util.EntityUtils;
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -33,6 +36,7 @@ import java.io.InputStreamReader;
 import java.io.Reader;
 import java.net.URL;
 import java.nio.charset.Charset;
+import java.util.HashMap;
 
 import adapters.JsonListAdapter;
 
@@ -64,43 +68,47 @@ public class Overzichtscherm extends AppCompatActivity implements OnClickListene
 
                 progressDialog = ProgressDialog.show(Overzichtscherm.this,  "", "");
             }
+        }
 
-        DefaultHttpClient httpClient = new DefaultHttpClient();
-        HttpPost httpPost = new HttpPost(urljson);
-        HttpResponse httpResponse = null;
+        @Override
+        protected JSONObject doInBackground(String... params) {
 
-            try {
-                    httpResponse = httpClient.execute(httpPost);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            HttpEntity httpEntity = httpResponse.getEntity();
+            String response;
 
             try {
-                    InputStream is = httpEntity.getContent();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
+
+                HttpClient httpclient = new DefaultHttpClient();
+
+                HttpPost httppost = new HttpPost(urljson);
+                //HttpPost httppost = new HttpPost(params[0]);
+                // you can also pass it and get the Url here.
+
+                HttpResponse responce = httpclient.execute(httppost);
+
+                HttpEntity httpEntity = responce.getEntity();
+
+                response = EntityUtils.toString(httpEntity);
+
+                Log.d("response is", response);
+
+                return new JSONObject(response);
+
+            } catch (Exception ex) {
+
+                ex.printStackTrace();
+
+            }
+
             return null;
         }
 
-    @Override
-    protected String doInBackground(String... params) {
-            return null;
-        }
-    }
+        @Override
+        protected void onPostExecute(JSONObject result)
+        {
+            super.onPostExecute(result);
 
+            progressDialog.dismiss();
 
-
-    private JSONObject readJsonFromUrl(String url) throws IOException, JSONException {
-        InputStream is = new URL(url).openStream();
-        try {
-            BufferedReader rd = new BufferedReader(new InputStreamReader(is, Charset.forName("UTF-8")));
-            String jsonText = readAll(rd);
-            JSONObject json = new JSONObject(jsonText);
-            return json;
-        } finally {
-            is.close();
         }
     }
 
