@@ -21,7 +21,6 @@ import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.json.JSONArray;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -37,7 +36,6 @@ public class Overzichtscherm extends AppCompatActivity implements OnClickListene
 
     private ListView list;
     private String urljson;
-    private Array
     private GoogleApiClient client;
 
     @Override
@@ -90,7 +88,7 @@ public class Overzichtscherm extends AppCompatActivity implements OnClickListene
 
     URL requestUrl = "http://www.fuujokan.nl/subject_lijst.json";
 
-    private void jsonTest(){
+    private void jsonTest(View )
     new AsyncTask<URL, Void, JSONObject>() {
 
         @Override
@@ -103,7 +101,7 @@ public class Overzichtscherm extends AppCompatActivity implements OnClickListene
             try {
                 // Getting Array of albums
 
-                vakkenlijst = json.getJSONArray(TAG_ALBUMS);
+                albums = json.getJSONArray(TAG_ALBUMS);
                 sngs=json.getJSONArray(TAG_SONGS);
                 // looping through All albums
 
@@ -122,8 +120,8 @@ public class Overzichtscherm extends AppCompatActivity implements OnClickListene
         return json;
     }
 
-}
-}
+
+
 
 
 }
