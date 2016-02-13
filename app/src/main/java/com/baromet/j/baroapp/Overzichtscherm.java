@@ -2,14 +2,18 @@ package com.baromet.j.baroapp;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ListView;
 
+import com.google.android.gms.appindexing.Action;
+import com.google.android.gms.appindexing.AppIndex;
 import com.google.android.gms.common.api.GoogleApiClient;
 
 import org.apache.http.HttpEntity;
@@ -34,6 +38,11 @@ public class Overzichtscherm extends AppCompatActivity implements OnClickListene
     private ProgressDialog progressDialog;
     private JSONArray itemArray;
     private String listname;
+    /**
+     * ATTENTION: This was auto-generated to implement the App Indexing API.
+     * See https://g.co/AppIndexing/AndroidStudio for more information.
+     */
+    private GoogleApiClient client2;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,8 +56,60 @@ public class Overzichtscherm extends AppCompatActivity implements OnClickListene
         list = (ListView) this.findViewById(R.id.vakkenlijst);
 
 
+        list.setOnItemClickListener(new AdapterView() {
+            @Override
+            public void onItemClick(AdapterView<?> adapter, View view, int position, long arg) {
+                Intent appInfo = new Intent(Overzichtscherm.this, Vakdetailscherm.class);
+                startActivity(appInfo);
+            }
+        });
+
+
         new UpdateTask().execute(); //run updatetask
 
+        // ATTENTION: This was auto-generated to implement the App Indexing API.
+        // See https://g.co/AppIndexing/AndroidStudio for more information.
+        client2 = new GoogleApiClient.Builder(this).addApi(AppIndex.API).build();
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+
+        // ATTENTION: This was auto-generated to implement the App Indexing API.
+        // See https://g.co/AppIndexing/AndroidStudio for more information.
+        client2.connect();
+        Action viewAction = Action.newAction(
+                Action.TYPE_VIEW, // TODO: choose an action type.
+                "Overzichtscherm Page", // TODO: Define a title for the content shown.
+                // TODO: If you have web page content that matches this app activity's content,
+                // make sure this auto-generated web page URL is correct.
+                // Otherwise, set the URL to null.
+                Uri.parse("http://host/path"),
+                // TODO: Make sure this auto-generated app deep link URI is correct.
+                Uri.parse("android-app://com.baromet.j.baroapp/http/host/path")
+        );
+        AppIndex.AppIndexApi.start(client2, viewAction);
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+
+        // ATTENTION: This was auto-generated to implement the App Indexing API.
+        // See https://g.co/AppIndexing/AndroidStudio for more information.
+        Action viewAction = Action.newAction(
+                Action.TYPE_VIEW, // TODO: choose an action type.
+                "Overzichtscherm Page", // TODO: Define a title for the content shown.
+                // TODO: If you have web page content that matches this app activity's content,
+                // make sure this auto-generated web page URL is correct.
+                // Otherwise, set the URL to null.
+                Uri.parse("http://host/path"),
+                // TODO: Make sure this auto-generated app deep link URI is correct.
+                Uri.parse("android-app://com.baromet.j.baroapp/http/host/path")
+        );
+        AppIndex.AppIndexApi.end(client2, viewAction);
+        client2.disconnect();
     }
 
     private class UpdateTask extends AsyncTask<String, Void, JSONArray> {
@@ -56,7 +117,7 @@ public class Overzichtscherm extends AppCompatActivity implements OnClickListene
         protected void onPreExecute() {
             super.onPreExecute();
 
-            progressDialog = ProgressDialog.show(Overzichtscherm.this,  "", "");
+            progressDialog = ProgressDialog.show(Overzichtscherm.this, "", "");
         }
 
         @Override
@@ -87,8 +148,7 @@ public class Overzichtscherm extends AppCompatActivity implements OnClickListene
         }
 
         @Override
-        protected void onPostExecute(JSONArray result)
-        {
+        protected void onPostExecute(JSONArray result) {
             super.onPostExecute(result);
             itemArray = result;
             fillList();
@@ -97,13 +157,17 @@ public class Overzichtscherm extends AppCompatActivity implements OnClickListene
 
         }
     }
-    private void fillList (){
-            listname = "period";
-            list.setAdapter(new JsonListAdapter(itemArray,this, this, listname));
-            Log.d("setAdapter", "Setting adapter through urljson");
+
+    /*
+    private void saveClass{
+        Somehow save this in a database?
     }
-
-
+*/
+    private void fillList() {
+        listname = "period";
+        list.setAdapter(new JsonListAdapter(itemArray, this, this, listname));
+        Log.d("setAdapter", "Setting adapter through urljson");
+    }
 
 
     public void clickHoofdscherm(View v) {
@@ -140,11 +204,6 @@ public class Overzichtscherm extends AppCompatActivity implements OnClickListene
         }
         return sb.toString();
     }
-
-
-
-
-
 
 
 }
