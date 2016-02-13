@@ -32,7 +32,7 @@
         <Button
             android:layout_width="77dp"
             android:layout_height="70dp"
-            android:text="Invoeren"
+            android:text="Invoer"
             android:id="@+id/button14"
             android:layout_margin="5dp"
             android:layout_gravity="center"

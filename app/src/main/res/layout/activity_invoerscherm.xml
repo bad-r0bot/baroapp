@@ -30,11 +30,12 @@
         <Button
             android:layout_width="77dp"
             android:layout_height="70dp"
-            android:text="Invoeren"
+            android:text="Invoer"
             android:id="@+id/button6"
             android:layout_margin="5dp"
             android:layout_gravity="center"
-            android:enabled="false" />
+            android:enabled="false"
+            android:singleLine="false" />
 
         <Button
             android:layout_width="77dp"
@@ -52,7 +53,6 @@
             android:text="Vakdetail"
             android:id="@+id/button8"
             android:layout_margin="5dp"
-            android:nestedScrollingEnabled="false"
             android:onClick="clickVakdetailscherm"
             android:clickable="true" />
     </TableRow>

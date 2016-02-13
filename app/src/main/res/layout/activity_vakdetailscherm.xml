@@ -31,7 +31,7 @@
         <Button
             android:layout_width="77dp"
             android:layout_height="70dp"
-            android:text="Invoeren"
+            android:text="Invoer"
             android:id="@+id/button10"
             android:layout_margin="5dp"
             android:layout_gravity="center"
@@ -65,6 +65,40 @@
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@+id/tableRow"
-        android:layout_alignParentStart="true" />
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/tableRow3">
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:text="Large Text"
+                android:id="@+id/className" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="period"
+                android:id="@+id/classPeriod" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="ects"
+                android:id="@+id/classEcts" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="grade"
+                android:id="@+id/classGrade"
+                android:editable="true" />
+
+        </LinearLayout>
+    </FrameLayout>
 </RelativeLayout>
