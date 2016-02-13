@@ -28,7 +28,7 @@ import adapters.JsonListAdapter;
 
 public class Overzichtscherm extends AppCompatActivity implements OnClickListener {
 
-    public ListView list;
+    private ListView list;
     private String urljson;
     private GoogleApiClient client;
     private ProgressDialog progressDialog;
@@ -90,12 +90,14 @@ public class Overzichtscherm extends AppCompatActivity implements OnClickListene
             super.onPostExecute(result);
             itemArray = result;
             fillList();
+
             progressDialog.dismiss();
 
         }
     }
     private void fillList (){
-            list.setAdapter(new JsonListAdapter(itemArray));
+            Log.d("Here 3", "I got here.");
+            list.setAdapter(new JsonListAdapter(itemArray,this, this));
             Log.d("setAdapter", "Setting adapter through urljson");
     }
 

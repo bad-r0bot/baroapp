@@ -1,10 +1,18 @@
 package adapters;
 
+import android.app.Activity;
+import android.content.Context;
 import android.database.DataSetObserver;
+import android.graphics.Typeface;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListAdapter;
+import android.widget.ListView;
+import android.widget.TextView;
+
+import com.baromet.j.baroapp.R;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -13,15 +21,28 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
 
+
 /**
  * Created by Jim on 10/02/2016.
  */
 public class JsonListAdapter implements ListAdapter{
 
-    private JSONArray json;
+    private static LayoutInflater inflater = null;
 
-    public JsonListAdapter(JSONArray json){
+
+    private JSONArray json;
+    private Activity activity;
+    private Context context;
+
+    public JsonListAdapter(JSONArray json, Activity activity, Context context){
+        this.activity = activity;
         this.json = json;
+        this.context = context;
+
+        Log.d("Here 4", "I got here.");
+
+        inflater = (LayoutInflater) context
+                .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
     }
 
 
@@ -48,19 +69,26 @@ public class JsonListAdapter implements ListAdapter{
 
     @Override
     public int getCount() {
+
         return json.length();
     }
 
     @Override
     public Object getItem(int position) {
-        JSONArray array = null;
 
+        Log.d("Here 2", "I got here.");
         try {
-            return array.getJSONObject(position).get("name");
+            Log.d("Here 1", "I got here.");
+            if(json!=null) {
+                return json.getJSONObject(position).get("name");
+            }
+            else{
+                Log.d("Json is null", "null nul nll");
+            }
         }catch(JSONException e){
-            Log.d("JSON EXCEPTION","JSON Exception while while rading"+e.getMessage());
+            Log.d("JSON EXCEPTION","JSON Exception while while reading"+e.getMessage());
         }
-        return null;
+        return "can't find it";
     }
 
     @Override
@@ -75,7 +103,20 @@ public class JsonListAdapter implements ListAdapter{
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        return convertView;
+        // TODO Auto-generated method stub
+        View vi = convertView;
+
+        if (vi == null)
+            vi = inflater.inflate(R.layout.vakkenlijst_body,null);
+
+        TextView text = (TextView) vi.findViewById(R.id.vakkenlijst_body);
+
+        try {
+            text.setText(json.get(position).toString());
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return vi;
     }
 
     @Override
