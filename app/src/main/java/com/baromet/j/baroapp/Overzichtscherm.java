@@ -33,6 +33,7 @@ public class Overzichtscherm extends AppCompatActivity implements OnClickListene
     private GoogleApiClient client;
     private ProgressDialog progressDialog;
     private JSONArray itemArray;
+    private String listname;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,6 +43,7 @@ public class Overzichtscherm extends AppCompatActivity implements OnClickListene
         urljson = "http://www.fuujokan.nl/subject_lijst.json";
 
         itemArray = null;
+        listname = null;
         list = (ListView) this.findViewById(R.id.vakkenlijst);
 
 
@@ -77,7 +79,7 @@ public class Overzichtscherm extends AppCompatActivity implements OnClickListene
 
             } catch (Exception e) {
                 e.printStackTrace();
-                Log.d("AAAAGH", "Exception\n" + e.getMessage());
+                Log.d("Exception", "Exception\n" + e.getMessage());
 
             }
 
@@ -96,8 +98,8 @@ public class Overzichtscherm extends AppCompatActivity implements OnClickListene
         }
     }
     private void fillList (){
-            Log.d("Here 3", "I got here.");
-            list.setAdapter(new JsonListAdapter(itemArray,this, this));
+            listname = "period";
+            list.setAdapter(new JsonListAdapter(itemArray,this, this, listname));
             Log.d("setAdapter", "Setting adapter through urljson");
     }
 

@@ -31,15 +31,15 @@ public class JsonListAdapter implements ListAdapter{
 
 
     private JSONArray json;
+    private String listname;
     private Activity activity;
     private Context context;
 
-    public JsonListAdapter(JSONArray json, Activity activity, Context context){
+    public JsonListAdapter(JSONArray json, Activity activity, Context context, String listname){
         this.activity = activity;
         this.json = json;
         this.context = context;
-
-        Log.d("Here 4", "I got here.");
+        this.listname = listname;
 
         inflater = (LayoutInflater) context
                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -76,19 +76,17 @@ public class JsonListAdapter implements ListAdapter{
     @Override
     public Object getItem(int position) {
 
-        Log.d("Here 2", "I got here.");
         try {
-            Log.d("Here 1", "I got here.");
             if(json!=null) {
-                return json.getJSONObject(position).get("name");
+                return json.getJSONObject(position).get(listname);
             }
             else{
-                Log.d("Json is null", "null nul nll");
+                Log.d("Json is null", "null null null");
             }
         }catch(JSONException e){
             Log.d("JSON EXCEPTION","JSON Exception while while reading"+e.getMessage());
         }
-        return "can't find it";
+        return null;
     }
 
     @Override
@@ -103,7 +101,6 @@ public class JsonListAdapter implements ListAdapter{
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        // TODO Auto-generated method stub
         View vi = convertView;
 
         if (vi == null)
@@ -112,7 +109,7 @@ public class JsonListAdapter implements ListAdapter{
         TextView text = (TextView) vi.findViewById(R.id.vakkenlijst_body);
 
         try {
-            text.setText(json.get(position).toString());
+            text.setText(json.getJSONObject(position).get(listname).toString());
         } catch (JSONException e) {
             e.printStackTrace();
         }
