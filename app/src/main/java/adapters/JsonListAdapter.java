@@ -78,7 +78,7 @@ public class JsonListAdapter implements ListAdapter{
 
         try {
             if(json!=null) {
-                return json.getJSONObject(position).get(listname);
+                return json.getJSONObject(position);
             }
             else{
                 Log.d("Json is null", "null null null");

@@ -1,6 +1,7 @@
 package com.baromet.j.baroapp;
 
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.AsyncTask;
@@ -24,6 +25,7 @@ import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.util.EntityUtils;
 import org.json.JSONArray;
 import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.IOException;
 import java.io.Reader;
@@ -38,6 +40,7 @@ public class Overzichtscherm extends AppCompatActivity implements OnClickListene
     private ProgressDialog progressDialog;
     private JSONArray itemArray;
     private String listname;
+    private Context context;
     /**
      * ATTENTION: This was auto-generated to implement the App Indexing API.
      * See https://g.co/AppIndexing/AndroidStudio for more information.
@@ -55,21 +58,28 @@ public class Overzichtscherm extends AppCompatActivity implements OnClickListene
         listname = null;
         list = (ListView) this.findViewById(R.id.vakkenlijst);
 
-
-        list.setOnItemClickListener(new AdapterView() {
-            @Override
-            public void onItemClick(AdapterView<?> adapter, View view, int position, long arg) {
-                Intent appInfo = new Intent(Overzichtscherm.this, Vakdetailscherm.class);
-                startActivity(appInfo);
-            }
-        });
-
+        context = this;
 
         new UpdateTask().execute(); //run updatetask
 
         // ATTENTION: This was auto-generated to implement the App Indexing API.
         // See https://g.co/AppIndexing/AndroidStudio for more information.
         client2 = new GoogleApiClient.Builder(this).addApi(AppIndex.API).build();
+
+        list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
+                Vakdetailscherm vakdetailscherm = new Vakdetailscherm();
+
+                Intent intent = new Intent(context, Vakdetailscherm.class);
+
+                JSONObject message = (JSONObject) list.getItemAtPosition(position);
+
+                intent.putExtra("json_object", message.toString());
+                startActivity(intent);
+            }
+        });
     }
 
     @Override
