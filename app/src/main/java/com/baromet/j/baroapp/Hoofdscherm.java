@@ -30,7 +30,7 @@ public class Hoofdscherm extends AppCompatActivity implements OnClickListener {
 
     public void clickHoofdscherm(View v)
     {
-        //Go to hoofdscherm
+        //Go to hoofdscherm which can't happen because you are already here.
         Button button=(Button) v;
         startActivity(new Intent(Hoofdscherm.this, Hoofdscherm.class));
     }

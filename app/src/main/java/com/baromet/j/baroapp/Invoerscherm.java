@@ -23,7 +23,7 @@ public class Invoerscherm extends AppCompatActivity implements OnClickListener {
 
     public void clickInvoerscherm(View v)
     {
-        //Go to invoerscherm
+        //Go to invoerscherm which can't happen because you are already here.
         Button button6=(Button) v;
         startActivity(new Intent(Invoerscherm.this, Invoerscherm.class));
     }
