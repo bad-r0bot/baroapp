@@ -56,7 +56,7 @@ public class JsonListAdapter implements ListAdapter{
         JSONArray array = null;
 
         try {
-            return array.getJSONObject(position);
+            return array.getJSONObject(position).get("name");
         }catch(JSONException e){
             Log.d("JSON EXCEPTION","JSON Exception while while rading"+e.getMessage());
         }

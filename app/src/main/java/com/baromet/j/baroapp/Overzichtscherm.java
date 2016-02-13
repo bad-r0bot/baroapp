@@ -28,7 +28,7 @@ import adapters.JsonListAdapter;
 
 public class Overzichtscherm extends AppCompatActivity implements OnClickListener {
 
-    private ListView list;
+    public ListView list;
     private String urljson;
     private GoogleApiClient client;
     private ProgressDialog progressDialog;
