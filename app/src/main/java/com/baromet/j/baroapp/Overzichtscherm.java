@@ -174,7 +174,7 @@ public class Overzichtscherm extends AppCompatActivity implements OnClickListene
     }
 */
     private void fillList() {
-        listname = "period";
+        listname = "name";
         list.setAdapter(new JsonListAdapter(itemArray, this, this, listname));
         Log.d("setAdapter", "Setting adapter through urljson");
     }
