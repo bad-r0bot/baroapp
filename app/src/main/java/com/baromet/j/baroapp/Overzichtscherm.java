@@ -41,7 +41,7 @@ public class Overzichtscherm extends AppCompatActivity implements OnClickListene
 
         urljson = "http://www.fuujokan.nl/subject_lijst.json";
 
-
+        itemArray = null;
         list = (ListView) this.findViewById(R.id.vakkenlijst);
 
 
