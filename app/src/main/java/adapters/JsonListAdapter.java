@@ -18,9 +18,9 @@ import java.util.List;
  */
 public class JsonListAdapter implements ListAdapter{
 
-    private JSONObject json;
+    private JSONArray json;
 
-    public JsonListAdapter(JSONObject json){
+    public JsonListAdapter(JSONArray json){
         this.json = json;
     }
 
@@ -56,7 +56,6 @@ public class JsonListAdapter implements ListAdapter{
         JSONArray array = null;
 
         try {
-            array = json.toJSONArray(json.names());
             return array.getJSONObject(position);
         }catch(JSONException e){
             Log.d("JSON EXCEPTION","JSON Exception while while rading"+e.getMessage());
@@ -76,7 +75,7 @@ public class JsonListAdapter implements ListAdapter{
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        return null;
+        return convertView;
     }
 
     @Override
@@ -86,7 +85,7 @@ public class JsonListAdapter implements ListAdapter{
 
     @Override
     public int getViewTypeCount() {
-        return 0;
+        return 1;
     }
 
     @Override
