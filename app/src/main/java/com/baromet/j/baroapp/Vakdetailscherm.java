@@ -95,7 +95,7 @@ public class Vakdetailscherm extends AppCompatActivity implements OnClickListene
     public void clickInvoerscherm(View v) {
         //Go to invoerscherm
         Button button10 = (Button) v;
-        startActivity(new Intent(Vakdetailscherm.this, Invoer_scherm.class));
+        startActivity(new Intent(Vakdetailscherm.this, Invoerscherm.class));
     }
 
     public void clickOverzichtscherm(View v) {

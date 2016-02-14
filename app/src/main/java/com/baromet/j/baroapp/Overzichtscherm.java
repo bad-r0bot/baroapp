@@ -25,7 +25,7 @@ public class Overzichtscherm extends AppCompatActivity implements OnClickListene
     {
         //Go to invoerscherm which can't happen because you are already here.
         Button button6=(Button) v;
-        startActivity(new Intent(Overzichtscherm.this, Invoer_scherm.class));
+        startActivity(new Intent(Overzichtscherm.this, Invoerscherm.class));
     }
 
     public void clickOverzichtscherm(View v)

@@ -31,7 +31,7 @@ import java.io.Reader;
 
 import adapters.JsonListAdapter;
 
-public class Invoer_scherm extends AppCompatActivity implements OnClickListener {
+public class Invoerscherm extends AppCompatActivity implements OnClickListener {
 
     private ListView list;
     private String urljson;
@@ -90,7 +90,7 @@ public class Invoer_scherm extends AppCompatActivity implements OnClickListener 
         client2.connect();
         Action viewAction = Action.newAction(
                 Action.TYPE_VIEW, // TODO: choose an action type.
-                "Invoer_scherm Page", // TODO: Define a title for the content shown.
+                "Invoerscherm Page", // TODO: Define a title for the content shown.
                 // TODO: If you have web page content that matches this app activity's content,
                 // make sure this auto-generated web page URL is correct.
                 // Otherwise, set the URL to null.
@@ -109,7 +109,7 @@ public class Invoer_scherm extends AppCompatActivity implements OnClickListener 
         // See https://g.co/AppIndexing/AndroidStudio for more information.
         Action viewAction = Action.newAction(
                 Action.TYPE_VIEW, // TODO: choose an action type.
-                "Invoer_scherm Page", // TODO: Define a title for the content shown.
+                "Invoerscherm Page", // TODO: Define a title for the content shown.
                 // TODO: If you have web page content that matches this app activity's content,
                 // make sure this auto-generated web page URL is correct.
                 // Otherwise, set the URL to null.
@@ -126,7 +126,7 @@ public class Invoer_scherm extends AppCompatActivity implements OnClickListener 
         protected void onPreExecute() {
             super.onPreExecute();
 
-            progressDialog = ProgressDialog.show(Invoer_scherm.this, "", "");
+            progressDialog = ProgressDialog.show(Invoerscherm.this, "", "");
             Log.d("Progress START", "Starting progress dialog.");
         }
 
@@ -187,19 +187,19 @@ public class Invoer_scherm extends AppCompatActivity implements OnClickListener 
     public void clickHoofdscherm(View v) {
         //Go to hoofdscherm
         Button button13 = (Button) v;
-        startActivity(new Intent(Invoer_scherm.this, Hoofdscherm.class));
+        startActivity(new Intent(Invoerscherm.this, Hoofdscherm.class));
     }
 
     public void clickInvoerscherm(View v) {
         //Go to invoerscherm
         Button button14 = (Button) v;
-        startActivity(new Intent(Invoer_scherm.this, Invoer_scherm.class));
+        startActivity(new Intent(Invoerscherm.this, Invoerscherm.class));
     }
 
     public void clickOverzichtscherm(View v) {
         //Go to overzichtscherm which can't happen because you are already here.
         Button button15 = (Button) v;
-        startActivity(new Intent(Invoer_scherm.this, Overzichtscherm.class));
+        startActivity(new Intent(Invoerscherm.this, Overzichtscherm.class));
 
 
     }
@@ -207,7 +207,7 @@ public class Invoer_scherm extends AppCompatActivity implements OnClickListener 
     public void clickVakdetailscherm(View v) {
         //Go to vakdetailscherm
         Button button16 = (Button) v;
-        startActivity(new Intent(Invoer_scherm.this, Vakdetailscherm.class));
+        startActivity(new Intent(Invoerscherm.this, Vakdetailscherm.class));
     }
 
     private static String readAll(Reader rd) throws IOException {
