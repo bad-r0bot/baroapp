@@ -7,7 +7,7 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context=".Hoofdscherm"
+    tools:context=".LoginScreen"
     android:background="#4b33cccc">
 
     <TableRow
@@ -23,7 +23,7 @@
             android:layout_width="wrap_content"
             android:layout_height="70dp"
             android:text="Hoofdscherm"
-            android:id="@+id/button"
+            android:id="@+id/loginButton"
             android:layout_margin="5dp"
             android:layout_gravity="center"
             android:enabled="false" />
@@ -32,7 +32,7 @@
             android:layout_width="wrap_content"
             android:layout_height="70dp"
             android:text="Invoer"
-            android:id="@+id/button2"
+            android:id="@+id/invoerButton"
             android:layout_margin="5dp"
             android:clickable="true"
             android:onClick="clickInvoerscherm"
@@ -43,7 +43,7 @@
             android:layout_width="wrap_content"
             android:layout_height="70dp"
             android:text="Overzicht"
-            android:id="@+id/button3"
+            android:id="@+id/overzichtButton"
             android:layout_margin="5dp"
             android:onClick="clickOverzichtscherm"
             android:clickable="true"
@@ -80,11 +80,12 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:inputType="textPersonName"
-                android:text="Naam"
                 android:ems="10"
                 android:id="@+id/editText"
                 android:layout_column="8"
-                android:editable="true" />
+                android:editable="true"
+                android:singleLine="false"
+                android:hint="Voer uw naam in" />
         </TableRow>
     </TableLayout>
 

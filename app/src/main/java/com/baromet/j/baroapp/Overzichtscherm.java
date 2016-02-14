@@ -18,7 +18,7 @@ public class Overzichtscherm extends AppCompatActivity implements OnClickListene
     {
         //Go to hoofdscherm
         Button button5=(Button) v;
-        startActivity(new Intent(Overzichtscherm.this, Hoofdscherm.class));
+        startActivity(new Intent(Overzichtscherm.this, LoginScreen.class));
     }
 
     public void clickInvoerscherm(View v)

@@ -1,4 +1,4 @@
-package com.baromet.j.baroapp;
+ package com.baromet.j.baroapp;
 
 import android.app.ProgressDialog;
 import android.content.Context;
@@ -24,12 +24,15 @@ import org.apache.http.client.methods.HttpPost;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.util.EntityUtils;
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
 import java.io.Reader;
 
 import adapters.JsonListAdapter;
+import database.DatabaseController;
+import models.Course;
 
 public class Invoerscherm extends AppCompatActivity implements OnClickListener {
 
@@ -56,6 +59,9 @@ public class Invoerscherm extends AppCompatActivity implements OnClickListener {
         itemArray = null;
         listname = null;
         list = (ListView) this.findViewById(R.id.vakkenlijst);
+
+        String name = getIntent().getExtras().getString("userName");
+        setTitle(name);
 
         context = this;
 
@@ -160,14 +166,21 @@ public class Invoerscherm extends AppCompatActivity implements OnClickListener {
         }
 
         @Override
-        protected void onPostExecute(JSONArray result) {
+        protected void onPostExecute(JSONArray result){
+            DatabaseController dbc = new DatabaseController(getBaseContext());
             super.onPostExecute(result);
             itemArray = result;
+            dbc.truncateCourses();
+            for(int i = 0; i < result.length(); i++){
+                try {
+                    dbc.storeCourse(new Course(result.getJSONObject(i)));
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
             fillList();
-
             progressDialog.dismiss();
             Log.d("Progress END", "Ending progress dialog.");
-
         }
     }
 
@@ -175,7 +188,8 @@ public class Invoerscherm extends AppCompatActivity implements OnClickListener {
     private void saveClass{
         Somehow save this in a database?
     }
-*/
+    */
+
     private void fillList() {
         Log.d("Fill List", "Filling list of classes.");
         listname = "name";
@@ -187,7 +201,7 @@ public class Invoerscherm extends AppCompatActivity implements OnClickListener {
     public void clickHoofdscherm(View v) {
         //Go to hoofdscherm
         Button button13 = (Button) v;
-        startActivity(new Intent(Invoerscherm.this, Hoofdscherm.class));
+        startActivity(new Intent(Invoerscherm.this, LoginScreen.class));
     }
 
     public void clickInvoerscherm(View v) {

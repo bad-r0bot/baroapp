@@ -1,5 +1,8 @@
 package models;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 /**
  * Created by Jim on 14/02/2016.
  */
@@ -17,6 +20,16 @@ public class Course {
         this.period = period;
         this.ects = ects;
 
+    }
+    public Course(JSONObject course){
+        this.id = 0;
+        try {
+            this.courseName = course.getString("name");
+            this.period = course.getInt("period");
+            this.ects = course.getInt("ects");
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
     }
 
     public int getId() {
