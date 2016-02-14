@@ -7,8 +7,8 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context="com.baromet.j.baroapp.Overzichtscherm"
-    android:id="@+id/OverzichtLayout">
+    tools:context=".Overzichtscherm"
+    android:background="#4b33cccc">
 
     <TableRow
         android:layout_width="match_parent"
@@ -16,53 +16,62 @@
         android:layout_alignParentTop="true"
         android:layout_alignParentStart="true"
         android:layout_alignParentEnd="true"
-        android:id="@+id/tableRow4" >
+        android:id="@+id/tableRow2" >
 
         <Button
             android:layout_width="77dp"
             android:layout_height="70dp"
             android:text="Hoofdscherm"
-            android:id="@+id/button13"
+            android:id="@+id/button5"
             android:layout_margin="5dp"
-            android:layout_gravity="center"
-            android:clickable="true"
             android:onClick="clickHoofdscherm"
-            android:textSize="10dp" />
+            android:clickable="true"
+            android:layout_gravity="center"/>
 
         <Button
             android:layout_width="77dp"
             android:layout_height="70dp"
             android:text="Invoer"
-            android:id="@+id/button14"
+            android:id="@+id/button6"
             android:layout_margin="5dp"
             android:layout_gravity="center"
-            android:clickable="true"
-            android:onClick="clickInvoerscherm"
-            android:textSize="10dp" />
+            android:enabled="true"
+            android:singleLine="false"
+            android:clickable="true" />
 
         <Button
             android:layout_width="77dp"
             android:layout_height="70dp"
             android:text="Overzicht"
-            android:id="@+id/button15"
+            android:id="@+id/button7"
             android:layout_margin="5dp"
-            android:layout_gravity="center"
             android:onClick="clickOverzichtscherm"
+            android:clickable="false"
             android:enabled="false"
-            android:textSize="10dp" />
+            android:layout_gravity="center"/>
 
+        <Button
+            android:layout_width="77dp"
+            android:layout_height="70dp"
+            android:text="Vakdetail"
+            android:id="@+id/button8"
+            android:layout_margin="5dp"
+            android:onClick="clickVakdetailscherm"
+            android:clickable="true" />
     </TableRow>
 
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_alignParentStart="true"
-        android:layout_below="@+id/tableRow4"
-        android:id="@+id/frameForVakken">
+        android:layout_below="@+id/tableRow2">
 
-        <ListView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/vakkenlijst" />
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/scrollView"
+            android:layout_row="0"
+            android:layout_column="0" />
+
     </FrameLayout>
 </RelativeLayout>

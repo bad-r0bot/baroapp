@@ -36,6 +36,8 @@ public class JsonListAdapter implements ListAdapter{
     private Context context;
 
     public JsonListAdapter(JSONArray json, Activity activity, Context context, String listname){
+
+        Log.d("JSONListAdapter START", "Setting adapter through json list adapter");
         this.activity = activity;
         this.json = json;
         this.context = context;
@@ -101,6 +103,7 @@ public class JsonListAdapter implements ListAdapter{
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
+        Log.d("Set Text START", "Setting text for textview of list.");
         View vi = convertView;
 
         if (vi == null)
@@ -113,7 +116,10 @@ public class JsonListAdapter implements ListAdapter{
         } catch (JSONException e) {
             e.printStackTrace();
         }
+        Log.d("Set Text END", "Text set for textview of list.");
         return vi;
+
+
     }
 
     @Override
