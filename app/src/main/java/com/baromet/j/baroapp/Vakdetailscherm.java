@@ -89,7 +89,7 @@ public class Vakdetailscherm extends AppCompatActivity implements OnClickListene
     public void clickHoofdscherm(View v) {
         //Go to hoofdscherm
         Button button9 = (Button) v;
-        startActivity(new Intent(Vakdetailscherm.this, LoginScreen.class));
+        startActivity(new Intent(Vakdetailscherm.this, Hoofdscherm.class));
     }
 
     public void clickInvoerscherm(View v) {
@@ -108,6 +108,12 @@ public class Vakdetailscherm extends AppCompatActivity implements OnClickListene
         //Go to vakdetailscherm which can't happen because you are already here.
         Button button12 = (Button) v;
         startActivity(new Intent(Vakdetailscherm.this, Vakdetailscherm.class));
+    }
+
+    public void editCijfer(View v) {
+        //Go to hoofdscherm
+        Button button9 = (Button) v;
+        startActivity(new Intent(Vakdetailscherm.this, Hoofdscherm.class));
     }
 
     @Override

@@ -15,7 +15,7 @@ import java.util.Calendar;
 import database.DatabaseController;
 import models.User;
 
-public class LoginScreen extends AppCompatActivity implements OnClickListener, TextWatcher{
+public class Hoofdscherm extends AppCompatActivity implements OnClickListener, TextWatcher{
 
     TextView currentYear;
     EditText nameField;
@@ -58,14 +58,14 @@ public class LoginScreen extends AppCompatActivity implements OnClickListener, T
     public void clickHoofdscherm(View v)    {
         //Go to hoofdscherm which can't happen because you are already here.
         //loginButton=(Button) v;
-        startActivity(new Intent(LoginScreen.this, LoginScreen.class));
+        startActivity(new Intent(Hoofdscherm.this, Hoofdscherm.class));
     }
 
     public void clickInvoerscherm(View v)
     {
         //Go to invoerscherm
         User user = dbc.getUserByName(nameField.getText().toString());
-        Intent intent = new Intent(LoginScreen.this, Invoerscherm.class);
+        Intent intent = new Intent(Hoofdscherm.this, Invoerscherm.class);
 
         //If user is unknown
         if(user==null) {
@@ -83,7 +83,7 @@ public class LoginScreen extends AppCompatActivity implements OnClickListener, T
     {
         //Go to overzichtscherm
        // overzichtButton=(Button) v;
-        startActivity(new Intent(LoginScreen.this, Overzichtscherm.class));
+        startActivity(new Intent(Hoofdscherm.this, Overzichtscherm.class));
     }
 
     @Override

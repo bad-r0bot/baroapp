@@ -201,7 +201,7 @@ public class Invoerscherm extends AppCompatActivity implements OnClickListener {
     public void clickHoofdscherm(View v) {
         //Go to hoofdscherm
         Button button13 = (Button) v;
-        startActivity(new Intent(Invoerscherm.this, LoginScreen.class));
+        startActivity(new Intent(Invoerscherm.this, Hoofdscherm.class));
     }
 
     public void clickInvoerscherm(View v) {

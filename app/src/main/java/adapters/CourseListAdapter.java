@@ -14,7 +14,7 @@ import java.util.Map;
 import models.Course;
 
 /**
- * Created by Obb on 14/02/2016.
+ * Created by Jim on 14/02/2016.
  */
 public class CourseListAdapter implements ListAdapter {
 

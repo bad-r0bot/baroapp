@@ -146,6 +146,12 @@ public class DatabaseController extends SQLiteOpenHelper{
             db.close();
         }
 
+        public void getGrade(Course course){
+            SQLiteDatabase db = this.getWritableDatabase();
+            SQLiteStatement stmt = db.compileStatement("SELECT name FROM course WHERE name = '" + name + "';", null);
+            stmt.bindString(1, course.getCourseName());
+        }
+
         public Course getCourse(int id) {
             SQLiteDatabase db = this.getReadableDatabase();
             Cursor cursor = db.rawQuery("SELECT * FROM courses where id = " + id + ";", null);
@@ -204,6 +210,5 @@ public class DatabaseController extends SQLiteOpenHelper{
             return grades.containsKey(course);
         }
 
-        /// NO FURTHER
     }
 
