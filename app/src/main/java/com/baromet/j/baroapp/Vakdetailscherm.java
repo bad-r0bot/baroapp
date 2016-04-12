@@ -1,5 +1,6 @@
 package com.baromet.j.baroapp;
 
+import android.app.AlertDialog;
 import android.content.Intent;
 import android.net.Uri;
 import android.support.v7.app.AppCompatActivity;
@@ -18,20 +19,40 @@ import org.json.JSONObject;
 
 import java.text.DecimalFormat;
 
-public class Vakdetailscherm extends AppCompatActivity implements OnClickListener {
+import database.DatabaseController;
+import models.Course;
+
+public class Vakdetailscherm extends AppCompatActivity implements OnClickListener{
 
     private JSONObject jsonItem;
-    private int classGrade;
-    /**
-     * ATTENTION: This was auto-generated to implement the App Indexing API.
-     * See https://g.co/AppIndexing/AndroidStudio for more information.
-     */
+    private Double classGrade;
+    private DatabaseController dbController;
+    private Course course;
     private GoogleApiClient client;
+
+    Button clickButtonOpslaan;
+    Button clickButtonAnnuleren;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_vakdetailscherm);
+
+        clickButtonOpslaan = (Button) findViewById(R.id.clickButtonOpslaan);
+        clickButtonOpslaan.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                clickOpslaan(v);
+            }
+        });
+
+        clickButtonAnnuleren = (Button) findViewById(R.id.clickButtonAnnulleren);
+        clickButtonAnnuleren.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                clickAnnuleren(v);
+            }
+        });
 
         Intent intent = getIntent();
 
@@ -42,16 +63,17 @@ public class Vakdetailscherm extends AppCompatActivity implements OnClickListene
         } catch (JSONException e) {
             e.printStackTrace();
         }
-        // ATTENTION: This was auto-generated to implement the App Indexing API.
-        // See https://g.co/AppIndexing/AndroidStudio for more information.
-        client = new GoogleApiClient.Builder(this).addApi(AppIndex.API).build();
+       client = new GoogleApiClient.Builder(this).addApi(AppIndex.API).build();
+
+
     }
 
     private void fillData() {
         TextView classView = (TextView) findViewById(R.id.className);
         TextView periodView = (TextView) findViewById(R.id.classPeriod);
-        TextView gradeView = (TextView) findViewById(R.id.classGrade);
+        TextView gradeView = (TextView) findViewById(R.id.cijferText);
         TextView ectsView = (TextView) findViewById(R.id.classEcts);
+
 
         try {
             classView.setText(jsonItem.getString("name"));
@@ -62,6 +84,10 @@ public class Vakdetailscherm extends AppCompatActivity implements OnClickListene
         } catch (JSONException e) {
             e.printStackTrace();
         }
+
+    }
+
+    private void setCourse(){
 
     }
 
@@ -110,10 +136,25 @@ public class Vakdetailscherm extends AppCompatActivity implements OnClickListene
         startActivity(new Intent(Vakdetailscherm.this, Vakdetailscherm.class));
     }
 
-    public void editCijfer(View v) {
-        //Go to hoofdscherm
-        Button button9 = (Button) v;
-        startActivity(new Intent(Vakdetailscherm.this, Hoofdscherm.class));
+    public void clickOpslaan(View v) {
+        Log.d("Clicked Opslaan", "click");
+        Button cijferOpslaan = (Button) v;
+        checkGrade();
+        if (checkGrade()){
+            //dbController.setGrade(classGrade);
+        }
+        else{
+            AlertDialog.Builder alertDiaglogBuilder = new AlertDialog.Builder(Vakdetailscherm.this);
+            //set title
+            alertDiaglogBuilder.setTitle("Geen geldige cijfer!");
+            alertDiaglogBuilder.setMessage("Voer een geldige cijfer in en probeer opnieuw.")
+                    .setCancelable(true);
+        }
+    }
+
+    public void clickAnnuleren(View v) {
+        Log.d("Clicked Anuleren", "click");
+        Button cijferAnnuleren = (Button) v;
     }
 
     @Override

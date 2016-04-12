@@ -145,13 +145,19 @@ public class DatabaseController extends SQLiteOpenHelper{
             stmt.execute();
             db.close();
         }
-
-        public void getGrade(Course course){
+/*
+        public void getGrade(String name){
             SQLiteDatabase db = this.getWritableDatabase();
-            SQLiteStatement stmt = db.compileStatement("SELECT name FROM course WHERE name = '" + name + "';", null);
-            stmt.bindString(1, course.getCourseName());
+            SQLiteStatement stmt = db.compileStatement("SELECT grade FROM course WHERE name = '" + name + "';", null);
+
+            //return ;
         }
 
+        public void setGrade(Double grade){
+            SQLiteDatabase db = this.getWritableDatabase();
+            SQLiteStatement stmt = db.compileStatement();
+        }
+*/
         public Course getCourse(int id) {
             SQLiteDatabase db = this.getReadableDatabase();
             Cursor cursor = db.rawQuery("SELECT * FROM courses where id = " + id + ";", null);

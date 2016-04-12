@@ -71,7 +71,7 @@
 
         <GridLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="116dp">
 
             <TextView
                 android:layout_width="wrap_content"
@@ -87,7 +87,7 @@
                 android:layout_height="wrap_content"
                 android:text="period"
                 android:id="@+id/classPeriod"
-                android:layout_row="2"
+                android:layout_row="1"
                 android:layout_column="0" />
 
             <TextView
@@ -95,34 +95,37 @@
                 android:layout_height="wrap_content"
                 android:text="ects"
                 android:id="@+id/classEcts"
-                android:layout_row="2"
-                android:layout_column="1" />
+                android:layout_row="3"
+                android:layout_column="0" />
 
-            <TextView
+            <EditText
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="grade"
-                android:id="@+id/classGrade"
+                android:inputType="number|numberDecimal"
+                android:ems="10"
+                android:id="@+id/cijferText"
+                android:layout_row="2"
+                android:layout_column="0"
+                android:clickable="true"
                 android:editable="true"
+                android:maxLength="3" />
+
+            <Button
+                style="?android:attr/buttonStyleSmall"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Opslaan"
+                android:id="@+id/clickButtonOpslaan"
                 android:layout_row="2"
                 android:layout_column="2"
                 android:clickable="true" />
 
             <Button
-                style="?android:attr/buttonStyleSmall"
-                android:layout_width="38dp"
-                android:layout_height="30dp"
-                android:text="Opslaan"
-                android:id="@+id/cijferOpslaan"
-                android:layout_row="2"
-                android:layout_column="3"
-                android:clickable="false" />
-
-            <Button
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Annuleren"
-                android:id="@+id/cijferAnnuleren"
+                android:id="@+id/clickButtonAnnulleren"
+                android:clickable="true"
                 android:layout_row="2"
                 android:layout_column="4" />
         </GridLayout>
