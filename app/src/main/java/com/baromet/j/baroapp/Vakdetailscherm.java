@@ -102,6 +102,11 @@ public class Vakdetailscherm extends AppCompatActivity implements OnClickListene
             return true;
         } catch (Exception e) {
             Log.d("EXCEPTION", "Incorrect number" + e.getMessage());
+            AlertDialog.Builder alertDiaglogBuilder = new AlertDialog.Builder(Vakdetailscherm.this);
+            //set title
+            alertDiaglogBuilder.setTitle("Geen geldige cijfer!");
+            alertDiaglogBuilder.setMessage("Voer een geldige cijfer in en probeer opnieuw.")
+                    .setCancelable(true);
             return false;
         }
     }
@@ -140,16 +145,6 @@ public class Vakdetailscherm extends AppCompatActivity implements OnClickListene
         Log.d("Clicked Opslaan", "click");
         Button cijferOpslaan = (Button) v;
         checkGrade();
-        if (checkGrade()){
-            //dbController.setGrade(classGrade);
-        }
-        else{
-            AlertDialog.Builder alertDiaglogBuilder = new AlertDialog.Builder(Vakdetailscherm.this);
-            //set title
-            alertDiaglogBuilder.setTitle("Geen geldige cijfer!");
-            alertDiaglogBuilder.setMessage("Voer een geldige cijfer in en probeer opnieuw.")
-                    .setCancelable(true);
-        }
     }
 
     public void clickAnnuleren(View v) {
