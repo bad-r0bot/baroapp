@@ -73,8 +73,6 @@ public class Hoofdscherm extends AppCompatActivity implements OnClickListener, T
             user = dbc.getUserByName(nameField.getText().toString());
         }
 
-
-        intent.putExtra("userName", user.getName());
         intent.putExtra("userId", user.getId());
         startActivity(intent);
     }

@@ -33,8 +33,9 @@ import java.io.Reader;
 import adapters.JsonListAdapter;
 import database.DatabaseController;
 import models.Course;
+import models.User;
 
-public class Invoerscherm extends AppCompatActivity implements OnClickListener {
+ public class Invoerscherm extends AppCompatActivity implements OnClickListener {
 
     private ListView list;
     private String urljson;
@@ -43,6 +44,9 @@ public class Invoerscherm extends AppCompatActivity implements OnClickListener {
     private JSONArray itemArray;
     private String listname;
     private Context context;
+    private DatabaseController dbc;
+    private User user ;
+
     /**
      * ATTENTION: This was auto-generated to implement the App Indexing API.
      * See https://g.co/AppIndexing/AndroidStudio for more information.
@@ -60,15 +64,15 @@ public class Invoerscherm extends AppCompatActivity implements OnClickListener {
         listname = null;
         list = (ListView) this.findViewById(R.id.vakkenlijst);
 
-        String name = getIntent().getExtras().getString("userName");
-        setTitle(name);
+
+        dbc = new DatabaseController(getBaseContext());
+        user = dbc.getUser(getIntent().getExtras().getInt("userId"));
+        setTitle(user.getName()+" "+ user.getId());
 
         context = this;
 
         new UpdateTask().execute(); //run updatetask
 
-        // ATTENTION: This was auto-generated to implement the App Indexing API.
-        // See https://g.co/AppIndexing/AndroidStudio for more information.
         client2 = new GoogleApiClient.Builder(this).addApi(AppIndex.API).build();
 
         list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -82,6 +86,7 @@ public class Invoerscherm extends AppCompatActivity implements OnClickListener {
                 JSONObject message = (JSONObject) list.getItemAtPosition(position);
 
                 intent.putExtra("json_object", message.toString());
+                intent.putExtra("userId", user.getId());
                 startActivity(intent);
             }
         });

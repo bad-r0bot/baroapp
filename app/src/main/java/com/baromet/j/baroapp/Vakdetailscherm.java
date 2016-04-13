@@ -1,13 +1,15 @@
 package com.baromet.j.baroapp;
 
 import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
 
 import com.google.android.gms.appindexing.Action;
@@ -21,22 +23,29 @@ import java.text.DecimalFormat;
 
 import database.DatabaseController;
 import models.Course;
+import models.User;
 
-public class Vakdetailscherm extends AppCompatActivity implements OnClickListener{
+public class Vakdetailscherm extends AppCompatActivity implements OnClickListener {
 
     private JSONObject jsonItem;
     private Double classGrade;
-    private DatabaseController dbController;
+    private DatabaseController dbc;
     private Course course;
+    private User user;
+
     private GoogleApiClient client;
 
-    Button clickButtonOpslaan;
-    Button clickButtonAnnuleren;
+    private EditText gradeView;
+
+    private Button clickButtonOpslaan;
+    private Button clickButtonAnnuleren;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_vakdetailscherm);
+
+        gradeView = (EditText) findViewById(R.id.cijferText);
 
         clickButtonOpslaan = (Button) findViewById(R.id.clickButtonOpslaan);
         clickButtonOpslaan.setOnClickListener(new View.OnClickListener() {
@@ -58,20 +67,22 @@ public class Vakdetailscherm extends AppCompatActivity implements OnClickListene
 
         String itemString = intent.getStringExtra("json_object");
 
+        dbc = new DatabaseController(getBaseContext());
+
         try {
             jsonItem = new JSONObject(itemString);
         } catch (JSONException e) {
             e.printStackTrace();
         }
-       client = new GoogleApiClient.Builder(this).addApi(AppIndex.API).build();
-
-
+        client = new GoogleApiClient.Builder(this).addApi(AppIndex.API).build();
+        course = new Course(jsonItem);
+        user = dbc.getUser(getIntent().getExtras().getInt("userId"));
     }
 
     private void fillData() {
         TextView classView = (TextView) findViewById(R.id.className);
         TextView periodView = (TextView) findViewById(R.id.classPeriod);
-        TextView gradeView = (TextView) findViewById(R.id.cijferText);
+        EditText gradeView = (EditText) findViewById(R.id.cijferText);
         TextView ectsView = (TextView) findViewById(R.id.classEcts);
 
 
@@ -87,26 +98,50 @@ public class Vakdetailscherm extends AppCompatActivity implements OnClickListene
 
     }
 
-    private void setCourse(){
+    private void setCourse() {
 
     }
 
-    private boolean checkGrade() {
+    public void clickOpslaan(View v) {
+        Log.d("Clicked Opslaan", "click");
+
+        Button cijferOpslaan = (Button) v;
+        isEmpty(gradeView);
+        if (gradeIsValid()) {
+
+            dbc.storeAttendance(user,course,Double.parseDouble(gradeView.getText().toString()));
+        }
+    }
+
+    /**
+     * @return true if double is valid false if invalid
+     */
+    private boolean gradeIsValid() {
         DecimalFormat decimalGrade = new DecimalFormat("0.0");
         try {
             //get grade from text
             if (classGrade < 1 || classGrade > 10) {
                 Log.d("ClassGrade", "Not between 1 and 10" + classGrade);
+
+                AlertDialog.Builder alertDiaglogBuilder = new AlertDialog.Builder(this);
+                //set title
+                alertDiaglogBuilder.setTitle("Geen geldige cijfer!");
+                //set message
+                alertDiaglogBuilder.setMessage("Voer een geldige cijfer in en probeer opnieuw.")
+                        .setCancelable(true);
+                alertDiaglogBuilder.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        // continue
+                    }
+                })
+                        .show();
+
                 return false;
             }
             return true;
         } catch (Exception e) {
             Log.d("EXCEPTION", "Incorrect number" + e.getMessage());
-            AlertDialog.Builder alertDiaglogBuilder = new AlertDialog.Builder(Vakdetailscherm.this);
-            //set title
-            alertDiaglogBuilder.setTitle("Geen geldige cijfer!");
-            alertDiaglogBuilder.setMessage("Voer een geldige cijfer in en probeer opnieuw.")
-                    .setCancelable(true);
+
             return false;
         }
     }
@@ -141,15 +176,21 @@ public class Vakdetailscherm extends AppCompatActivity implements OnClickListene
         startActivity(new Intent(Vakdetailscherm.this, Vakdetailscherm.class));
     }
 
-    public void clickOpslaan(View v) {
-        Log.d("Clicked Opslaan", "click");
-        Button cijferOpslaan = (Button) v;
-        checkGrade();
-    }
 
     public void clickAnnuleren(View v) {
         Log.d("Clicked Anuleren", "click");
         Button cijferAnnuleren = (Button) v;
+    }
+
+    private boolean isEmpty(EditText gradeView) {
+        if (gradeView.getText().toString().trim().length() > 0) {
+
+            classGrade = Double.parseDouble(gradeView.getText().toString());
+            return false;
+        } else {
+            Log.d("EditText is empty", "nulls");
+            return true;
+        }
     }
 
     @Override

@@ -53,6 +53,10 @@ public class PieChartActivity extends AppCompatActivity {
         });
     }
 
+    /**
+     *
+     * @param aantal Studiepunten die je nog nodig hebt
+     */
     private void setData(int aantal) {
         currentEcts = aantal;
         ArrayList<Entry> yValues = new ArrayList<>();

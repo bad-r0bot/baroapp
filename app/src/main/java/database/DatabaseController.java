@@ -4,7 +4,6 @@ package database;
  * Created by Jim on 14/02/2016.
  */
 
-import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
