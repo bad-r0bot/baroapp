@@ -22,14 +22,16 @@ import models.User;
 public class DatabaseController extends SQLiteOpenHelper{
 
         private static final int DATABASE_VERSION = 1;
-        private static final String DATABASE_NAME = "barometer";
+        private static final String DATABASE_NAME = "barometer_db5";
         private static final String TABLE_USERS = "users";
         private static final String TABLE_COURSES = "courses";
         private List<GregorianCalendar> periods;
+    private Context context;
 
         public DatabaseController(Context context) {
             super(context, DATABASE_NAME, null, DATABASE_VERSION);
             initPeriods();
+            this.context = context;
         }
 
         private void initPeriods() {
@@ -47,7 +49,6 @@ public class DatabaseController extends SQLiteOpenHelper{
             createUserTable(db);
             createAttendanceTable(db);
         }
-
 
         @Override
         public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
@@ -120,6 +121,20 @@ public class DatabaseController extends SQLiteOpenHelper{
             //initAttendance(user);
         }
 
+        public boolean attendenceIsInitialisedForUser(User user){
+            SQLiteDatabase db = this.getReadableDatabase();
+            Cursor cursor = db.rawQuery("SELECT * FROM attendances WHERE user_id = "+user.getId()+";", null);
+            int i = 0;
+
+            while(cursor.moveToNext()){
+               i++;
+            }
+            if(i>0) {
+                return true;
+            }
+            return false;
+        }
+
         public void initAttendance(User user){
             for(Course course: getAllCourses()){
                 double grade = 1.0;
@@ -132,16 +147,27 @@ public class DatabaseController extends SQLiteOpenHelper{
             SQLiteStatement stmt = db.compileStatement("INSERT INTO courses( name, period, ects)" +
                     "VALUES(?,?,?)");
             stmt.bindString(1, course.getCourseName());
-            stmt.bindLong(2, course.getPeriod());
-            stmt.bindLong(3, course.getEcts());
+            stmt.bindLong(3, course.getPeriod());
+            stmt.bindLong(2, course.getEcts());
             stmt.execute();
             db.close();
         }
 
+
+
         public void truncateCourses(){
             SQLiteDatabase db = this.getWritableDatabase();
-            SQLiteStatement stmt = db.compileStatement("DELETE FROM courses; VACUUM;");
-            stmt.execute();
+            SQLiteStatement stmt1 = db.compileStatement("DELETE FROM courses; VACUUM;");
+            SQLiteStatement stmt2 = db.compileStatement("UPDATE SQLITE_SEQUENCE SET SEQ=0 WHERE NAME='courses';");
+
+            try {
+                stmt1.execute();
+
+                stmt2.execute();
+            }
+            catch(Exception e){
+                throw new RuntimeException("AAAH TRUNCATING THIS SHIT"+e.getMessage());
+            }
             db.close();
         }
 /*
@@ -183,6 +209,25 @@ public class DatabaseController extends SQLiteOpenHelper{
         }
 
 
+        public Course getCourseByName(String name){
+            SQLiteDatabase db = this.getReadableDatabase();
+            Cursor cursor = db.rawQuery("SELECT * FROM courses WHERE name = '" + name + "';", null);
+            try {
+                if (cursor != null) {
+                    cursor.moveToFirst();
+                }
+                else{
+                    return null;
+                }
+                Course course = new Course(cursor.getInt(0), cursor.getString(1), cursor.getInt(3), cursor.getInt(2));
+                db.close();
+                return course;
+            } catch(Exception e) {
+                db.close();
+                return null;
+            }
+        }
+
         public List<Course> getAllCourses() {
             SQLiteDatabase db = this.getReadableDatabase();
             Cursor cursor = db.rawQuery("SELECT * FROM courses;", null);
@@ -205,9 +250,37 @@ public class DatabaseController extends SQLiteOpenHelper{
             db.close();
         }
 
+        public void updateAttendance(User user, Course course, Double grade){
+            SQLiteDatabase db = this.getWritableDatabase();
+            SQLiteStatement stmt = db.compileStatement("UPDATE attendances SET grade=?" +
+                    "WHERE user_id=? AND course_id=?");
+            stmt.bindDouble(1, grade.doubleValue());
+            stmt.bindLong(2, user.getId());
+            stmt.bindLong(3, course.getId());
+            stmt.execute();
+            db.close();
+        }
+
         public Double getGrade(User user, Course course) {
-            Map<Course,Double> grades = getCoursesForUser(user);
-            return grades.get(course);
+            SQLiteDatabase db = this.getReadableDatabase();
+
+            Cursor cursor = db.rawQuery("SELECT * FROM attendances WHERE user_id = " + user.getId() + " AND course_id = "+ course.getId() +";", null);
+            try {
+                if (cursor != null) {
+                    cursor.moveToFirst();
+                }
+                Double grade = cursor.getDouble(2);
+                db.close();
+                if(grade==null){
+                    return null;
+                }
+                return grade;
+            } catch(Exception e) {
+                db.close();
+                throw new RuntimeException("FOR COURSE: "+course.getId()+"\n"+e.getMessage());
+                //return null;
+            }
+
         }
 
         public boolean hasAttended(User user, Course course){

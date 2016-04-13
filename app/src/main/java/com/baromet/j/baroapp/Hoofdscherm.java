@@ -28,6 +28,7 @@ public class Hoofdscherm extends AppCompatActivity implements OnClickListener, T
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        this.getBaseContext().deleteDatabase("barometer");
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 

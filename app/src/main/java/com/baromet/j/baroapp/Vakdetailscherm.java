@@ -75,7 +75,11 @@ public class Vakdetailscherm extends AppCompatActivity implements OnClickListene
             e.printStackTrace();
         }
         client = new GoogleApiClient.Builder(this).addApi(AppIndex.API).build();
-        course = new Course(jsonItem);
+        try {
+            course = dbc.getCourseByName(jsonItem.getString("name"));
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
         user = dbc.getUser(getIntent().getExtras().getInt("userId"));
     }
 
@@ -87,9 +91,10 @@ public class Vakdetailscherm extends AppCompatActivity implements OnClickListene
 
 
         try {
-            classView.setText(jsonItem.getString("name"));
-            periodView.setText(jsonItem.getString("period"));
-            gradeView.setText(jsonItem.getString("grade"));
+            int i  = dbc.getAllCourses().size();
+            classView.setText(course.getCourseName());
+            periodView.setText(""+course.getPeriod());
+            gradeView.setText(""+dbc.getGrade(user, course));
             ectsView.setText(jsonItem.getString("ects"));
 
         } catch (JSONException e) {
@@ -109,7 +114,7 @@ public class Vakdetailscherm extends AppCompatActivity implements OnClickListene
         isEmpty(gradeView);
         if (gradeIsValid()) {
 
-            dbc.storeAttendance(user,course,Double.parseDouble(gradeView.getText().toString()));
+            dbc.updateAttendance(user, course, Double.parseDouble(gradeView.getText().toString()));
         }
     }
 

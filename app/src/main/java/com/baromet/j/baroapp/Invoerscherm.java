@@ -1,39 +1,40 @@
  package com.baromet.j.baroapp;
 
-import android.app.ProgressDialog;
-import android.content.Context;
-import android.content.Intent;
-import android.net.Uri;
-import android.os.AsyncTask;
-import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
-import android.view.View;
-import android.widget.AdapterView;
-import android.widget.Button;
-import android.widget.ListView;
+ import android.app.ProgressDialog;
+ import android.content.Context;
+ import android.content.Intent;
+ import android.net.Uri;
+ import android.os.AsyncTask;
+ import android.os.Bundle;
+ import android.support.v7.app.AppCompatActivity;
+ import android.util.Log;
+ import android.view.View;
+ import android.widget.AdapterView;
+ import android.widget.Button;
+ import android.widget.ListView;
+ import android.widget.Toast;
 
-import com.google.android.gms.appindexing.Action;
-import com.google.android.gms.appindexing.AppIndex;
-import com.google.android.gms.common.api.GoogleApiClient;
+ import com.google.android.gms.appindexing.Action;
+ import com.google.android.gms.appindexing.AppIndex;
+ import com.google.android.gms.common.api.GoogleApiClient;
 
-import org.apache.http.HttpEntity;
-import org.apache.http.HttpResponse;
-import org.apache.http.client.HttpClient;
-import org.apache.http.client.methods.HttpPost;
-import org.apache.http.impl.client.DefaultHttpClient;
-import org.apache.http.util.EntityUtils;
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
+ import org.apache.http.HttpEntity;
+ import org.apache.http.HttpResponse;
+ import org.apache.http.client.HttpClient;
+ import org.apache.http.client.methods.HttpPost;
+ import org.apache.http.impl.client.DefaultHttpClient;
+ import org.apache.http.util.EntityUtils;
+ import org.json.JSONArray;
+ import org.json.JSONException;
+ import org.json.JSONObject;
 
-import java.io.IOException;
-import java.io.Reader;
+ import java.io.IOException;
+ import java.io.Reader;
 
-import adapters.JsonListAdapter;
-import database.DatabaseController;
-import models.Course;
-import models.User;
+ import adapters.JsonListAdapter;
+ import database.DatabaseController;
+ import models.Course;
+ import models.User;
 
  public class Invoerscherm extends AppCompatActivity implements OnClickListener {
 
@@ -67,6 +68,11 @@ import models.User;
 
         dbc = new DatabaseController(getBaseContext());
         user = dbc.getUser(getIntent().getExtras().getInt("userId"));
+
+        if(!dbc.attendenceIsInitialisedForUser(user)) {
+            dbc.initAttendance(user);
+        }
+
         setTitle(user.getName()+" "+ user.getId());
 
         context = this;
@@ -172,20 +178,30 @@ import models.User;
 
         @Override
         protected void onPostExecute(JSONArray result){
-            DatabaseController dbc = new DatabaseController(getBaseContext());
             super.onPostExecute(result);
             itemArray = result;
             dbc.truncateCourses();
+            Course first =null;
             for(int i = 0; i < result.length(); i++){
                 try {
-                    dbc.storeCourse(new Course(result.getJSONObject(i)));
+
+                    first = new Course(result.getJSONObject(0));
+                    Course c = new Course(result.getJSONObject(i));
+                    if(dbc.getCourseByName(c.getCourseName()) == null) {
+                        dbc.storeCourse(c);
+                    }
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
-            }
-            fillList();
-            progressDialog.dismiss();
-            Log.d("Progress END", "Ending progress dialog.");
+
+        }
+        fillList();
+        progressDialog.dismiss();
+        Log.d("Progress END", "Ending progress dialog.");
+
+
+            Toast toast = Toast.makeText(context, "items: "+result.length()+"\nfirstId: "+first.getId(), Toast.LENGTH_LONG);
+            toast.show();
         }
     }
 
