@@ -1,7 +1,11 @@
 package com.baromet.j.baroapp;
 
+import android.app.AlertDialog;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
+import android.net.ConnectivityManager;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
@@ -63,7 +67,25 @@ public class Hoofdscherm extends AppCompatActivity implements OnClickListener, T
         currentYear.setText(new StringBuilder()
                 // Current year-1 to current year. eg 2015-2016
                 .append(yy - 1).append(" ").append("-").append(yy));
-        this.setTitle("Loginscherm voor periode: "+ dbc.getCurrentPeriod()+", week: " + dbc.getCurrentWeek());
+        this.setTitle("BaroApp: Het is nu periode: "+ dbc.getCurrentPeriod()+", week: " + dbc.getCurrentWeek());
+
+        if(isNetworkAvailable(this)){
+
+        }
+        else{
+            AlertDialog.Builder alertDiaglogBuilder = new AlertDialog.Builder(this);
+            //set title
+            alertDiaglogBuilder.setTitle("Geen internet");
+            //set message
+            alertDiaglogBuilder.setMessage("Er is geen internetbeschikbaar. De app zal niet werken.")
+                    .setCancelable(true);
+            alertDiaglogBuilder.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int which) {
+                    // continue
+                }
+            })
+                    .show();
+        }
     }
 
     public void clickHoofdscherm(View v)    {
@@ -131,7 +153,7 @@ public class Hoofdscherm extends AppCompatActivity implements OnClickListener, T
             ectsContent.setText(""+dbc.getTotalEcts(user));
             updateStudieAdvies(user);
         }else{
-            ectsContent.setText("USER NOT FOUND :(");
+            ectsContent.setText(" Type een gebruikersnaam in.");
         }
 
     }
@@ -139,16 +161,21 @@ public class Hoofdscherm extends AppCompatActivity implements OnClickListener, T
     private void updateStudieAdvies(User user){
         int ects = dbc.getFailedEcts(user) + dbc.getMissedEcts(user);
          if(ects > 20){
-            studieAdvies.setText("BSA waarschuwing!");
+            studieAdvies.setText("Waarschuwing:Je krijgt een BSA!");
             studieAdvies.setTextColor(Color.RED);
          }
         else if(ects > 0 && ects <= 10){
-            studieAdvies.setText("Blijft zitten");
+            studieAdvies.setText("Geen BSA. Je mag door naar het volgend jaar.");
             studieAdvies.setTextColor(Color.YELLOW);
         }
         else if (ects == 0){
-            studieAdvies.setText("Positieve feedback");
+            studieAdvies.setText("Je hebt alle ECTS behaald!");
             studieAdvies.setTextColor(Color.GREEN);
         }
+    }
+
+    public boolean isNetworkAvailable(final Context context) {
+        final ConnectivityManager connectivityManager = ((ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE));
+        return connectivityManager.getActiveNetworkInfo() != null && connectivityManager.getActiveNetworkInfo().isConnected();
     }
 }

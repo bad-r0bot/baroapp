@@ -130,10 +130,7 @@ public class DatabaseController extends SQLiteOpenHelper{
             while(cursor.moveToNext()){
                i++;
             }
-            if(i>0) {
-                return true;
-            }
-            return false;
+            return i > 0;
         }
 
         public void initAttendance(User user){

@@ -7,6 +7,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 
 import com.github.mikephil.charting.animation.Easing;
 import com.github.mikephil.charting.charts.PieChart;
@@ -32,6 +33,8 @@ public class Overzichtscherm extends AppCompatActivity implements OnClickListene
     Button invoerButton;
     Button overzichtButton;
 
+    EditText nameField;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -54,12 +57,6 @@ public class Overzichtscherm extends AppCompatActivity implements OnClickListene
 
         overzichtButton = (Button) findViewById(R.id.overzichtButton);
         overzichtButton.setEnabled(false);
-
-        hoofdscherm = (Button) findViewById(R.id.hoofdButton);
-        hoofdscherm.setEnabled(true);
-
-        invoerButton = (Button) findViewById(R.id.invoerButton);
-        invoerButton.setEnabled(true);
 
     }
     private void setData(int passed, int failed) {
@@ -95,28 +92,26 @@ public class Overzichtscherm extends AppCompatActivity implements OnClickListene
     public void clickHoofdscherm(View v)
     {
         //Go to hoofdscherm
-        Button button5=(Button) v;
+        Button hoofdButton=(Button) v;
         startActivity(new Intent(Overzichtscherm.this, Hoofdscherm.class));
     }
 
     public void clickInvoerscherm(View v)
     {
-        //Go to invoerscherm which can't happen because you are already here.
-        Button button6=(Button) v;
-        startActivity(new Intent(Overzichtscherm.this, Invoerscherm.class));
+        //Go to invoerscherm
+        Intent intent = new Intent(Overzichtscherm.this, Invoerscherm.class);
+        intent.putExtra("userId", user.getId());
+        startActivity(intent);
     }
 
     public void clickOverzichtscherm(View v)
     {
-        //Go to overzichtscherm
-        Button button7=(Button) v;
+        //Go to overzichtscherm can't happen. You are already in this screen.
+        Button overzichtButton=(Button) v;
         startActivity(new Intent(Overzichtscherm.this, Overzichtscherm.class));
+
+
     }
 
-    public void clickVakdetailscherm(View v)
-    {
-        //Go to vakdetailscherm
-        Button button8=(Button) v;
-        startActivity(new Intent(Overzichtscherm.this, Vakdetailscherm.class));
-    }
+
 }

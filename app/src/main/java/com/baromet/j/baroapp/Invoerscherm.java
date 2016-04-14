@@ -45,13 +45,19 @@ import models.User;
     private String listname;
     private Context context;
     private DatabaseController dbc;
-    private User user ;
+    private User user;
+    private Long starttime;
 
-    /**
-     * ATTENTION: This was auto-generated to implement the App Indexing API.
-     * See https://g.co/AppIndexing/AndroidStudio for more information.
-     */
     private GoogleApiClient client2;
+
+    private static String readAll(Reader rd) throws IOException {
+        StringBuilder sb = new StringBuilder();
+        int cp;
+        while ((cp = rd.read()) != -1) {
+            sb.append((char) cp);
+        }
+        return sb.toString();
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,6 +70,8 @@ import models.User;
         listname = null;
         list = (ListView) this.findViewById(R.id.vakkenlijst);
 
+        starttime = System.currentTimeMillis();
+        Log.d("Progress :::: ", "CURRENT TIME: " + starttime);
 
         dbc = new DatabaseController(getBaseContext());
         user = dbc.getUser(getIntent().getExtras().getInt("userId"));
@@ -101,117 +109,26 @@ import models.User;
     public void onStart() {
         super.onStart();
 
-        // ATTENTION: This was auto-generated to implement the App Indexing API.
-        // See https://g.co/AppIndexing/AndroidStudio for more information.
+
         client2.connect();
         Action viewAction = Action.newAction(
-                Action.TYPE_VIEW, // TODO: choose an action type.
-                "Invoerscherm Page", // TODO: Define a title for the content shown.
-                // TODO: If you have web page content that matches this app activity's content,
-                // make sure this auto-generated web page URL is correct.
-                // Otherwise, set the URL to null.
+                Action.TYPE_VIEW,
+                "Invoerscherm Page",
                 Uri.parse("http://host/path"),
-                // TODO: Make sure this auto-generated app deep link URI is correct.
+
                 Uri.parse("android-app://com.baromet.j.baroapp/http/host/path")
         );
         AppIndex.AppIndexApi.start(client2, viewAction);
     }
 
-    @Override
-    public void onStop() {
-        super.onStop();
 
-        // ATTENTION: This was auto-generated to implement the App Indexing API.
-        // See https://g.co/AppIndexing/AndroidStudio for more information.
-        Action viewAction = Action.newAction(
-                Action.TYPE_VIEW, // TODO: choose an action type.
-                "Invoerscherm Page", // TODO: Define a title for the content shown.
-                // TODO: If you have web page content that matches this app activity's content,
-                // make sure this auto-generated web page URL is correct.
-                // Otherwise, set the URL to null.
-                Uri.parse("http://host/path"),
-                // TODO: Make sure this auto-generated app deep link URI is correct.
-                Uri.parse("android-app://com.baromet.j.baroapp/http/host/path")
-        );
-        AppIndex.AppIndexApi.end(client2, viewAction);
-        client2.disconnect();
-    }
 
-    private class UpdateTask extends AsyncTask<String, Void, JSONArray> {
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-
-            progressDialog = ProgressDialog.show(Invoerscherm.this, "", "");
-            Log.d("Progress START", "Starting progress dialog.");
-        }
-
-        @Override
-        protected JSONArray doInBackground(String... params) {
-
-            String response;
-            Log.d("Progress MID", "Starting JSON http call.");
-
-            try {
-
-                HttpClient httpclient = new DefaultHttpClient();
-                HttpPost httppost = new HttpPost(urljson);
-                HttpResponse responce = httpclient.execute(httppost);
-                HttpEntity httpEntity = responce.getEntity();
-
-                response = EntityUtils.toString(httpEntity);
-
-                Log.d("response is", response);
-
-                return new JSONArray(response);
-
-            } catch (Exception e) {
-                e.printStackTrace();
-                Log.d("Exception", "Exception\n" + e.getMessage());
-
-            }
-            Log.d("Progress MID", "Exiting JSON http call.");
-
-            return null;
-        }
-
-        @Override
-        protected void onPostExecute(JSONArray result){
-            super.onPostExecute(result);
-            itemArray = result;
-            dbc.truncateCourses();
-            Course first =null;
-            for(int i = 0; i < result.length(); i++){
-                try {
-
-                    first = new Course(result.getJSONObject(0));
-                    Course c = new Course(result.getJSONObject(i));
-                    if(dbc.getCourseByName(c.getCourseName()) == null) {
-                        dbc.storeCourse(c);
-                    }
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-
-        }
-        fillList();
-        progressDialog.dismiss();
-        Log.d("Progress END", "Ending progress dialog.");
-
-        }
-    }
-
-    /*
-    private void saveClass{
-        Somehow save this in a database?
-    }
-    */
 
     private void fillList() {
-        Log.d("Fill List", "Filling list of classes.");
+
         listname = "name";
         list.setAdapter(new JsonListAdapter(itemArray, this, this, listname));
-        Log.d("setAdapter", "Setting adapter through urljson");
+
     }
 
 
@@ -239,14 +156,93 @@ import models.User;
         startActivity(new Intent(Invoerscherm.this, Vakdetailscherm.class));
     }
 
-    private static String readAll(Reader rd) throws IOException {
-        StringBuilder sb = new StringBuilder();
-        int cp;
-        while ((cp = rd.read()) != -1) {
-            sb.append((char) cp);
+    private class UpdateTask extends AsyncTask<String, Void, JSONArray> {
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            Log.d("Progress :::: ", "onPreExecute start time: " + ((System.currentTimeMillis() - starttime)) + " milliseconds");
+
+            progressDialog = ProgressDialog.show(Invoerscherm.this, "", "");
+            Log.d("Progress :::: ", "onPreExecute elapsed time: " + ((System.currentTimeMillis() - starttime)) + " milliseconds");
         }
-        return sb.toString();
+
+        @Override
+        protected JSONArray doInBackground(String... params) {
+
+            String response;
+
+            Log.d("Progress :::: ", "doInBackground start time: " + ((System.currentTimeMillis() - starttime)) + " milliseconds");
+
+            try {
+
+                HttpClient httpclient = new DefaultHttpClient();
+                HttpPost httppost = new HttpPost(urljson);
+                HttpResponse responce = httpclient.execute(httppost);
+                HttpEntity httpEntity = responce.getEntity();
+
+                response = EntityUtils.toString(httpEntity);
+
+                Log.d("Progress :::: ", "TRY jon elapsed time: " + ((System.currentTimeMillis() - starttime)) + " milliseconds");
+
+                return new JSONArray(response);
+
+            } catch (Exception e) {
+                e.printStackTrace();
+                Log.d("Exception", "Exception\n" + e.getMessage());
+                Log.d("Progress :::: ", "TRY jon CATCH elapsed time: " + ((System.currentTimeMillis() - starttime)) + " milliseconds");
+
+
+            }
+
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(JSONArray result){
+            super.onPostExecute(result);
+
+            itemArray = result;
+            dbc.truncateCourses();
+            Log.d("Progress :::: ", "onPostExecute start time: " + ((System.currentTimeMillis() - starttime)) + " milliseconds");
+            Course first =null;
+            for(int i = 0; i < result.length(); i++){
+                Log.d("Progress :::: ", "LOOP onPostExecute: " + (((System.currentTimeMillis() - starttime)))  + " milliseconds");
+                try {
+
+                    first = new Course(result.getJSONObject(0));
+                    Course c = new Course(result.getJSONObject(i));
+                    if(dbc.getCourseByName(c.getCourseName()) == null) {
+                        Log.d("Progress :::: ", "LOOP IF onPostExecute: " + (((System.currentTimeMillis() - starttime)))  + " milliseconds");
+                        dbc.storeCourse(c);
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+        }
+        fillList();
+        progressDialog.dismiss();
+
+        Log.d("Progress :::: ", "onPostExecute elapsed time: " + ((System.currentTimeMillis() - starttime)) + " milliseconds");
+
+
+        }
     }
 
+     @Override
+     public void onStop() {
+         super.onStop();
+         Log.d("Progress :::: ", "onStop start time: " + (((System.currentTimeMillis() - starttime)))  + " milliseconds");
+         Action viewAction = Action.newAction(
+                 Action.TYPE_VIEW,
+                 "Invoerscherm Page",
+                 Uri.parse("http://host/path"),
+
+                 Uri.parse("android-app://com.baromet.j.baroapp/http/host/path")
+         );
+         AppIndex.AppIndexApi.end(client2, viewAction);
+         client2.disconnect();
+         Log.d("Progress :::: ", "onStop elapsed time: " + ((System.currentTimeMillis() - starttime)) + " milliseconds");
+     }
 
 }
