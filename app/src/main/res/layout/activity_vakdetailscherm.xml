@@ -16,10 +16,11 @@
         android:layout_alignParentTop="true"
         android:layout_alignParentStart="true"
         android:layout_alignParentEnd="true"
-        android:id="@+id/tableRow3" >
+        android:id="@+id/tableRow3"
+        android:weightSum="1">
 
         <Button
-            android:layout_width="77dp"
+            android:layout_width="wrap_content"
             android:layout_height="70dp"
             android:text="Hoofdscherm"
             android:id="@+id/button9"
@@ -27,10 +28,11 @@
             android:layout_gravity="center"
             android:clickable="true"
             android:onClick="clickHoofdscherm"
-            android:textSize="10dp" />
+            android:textSize="10dp"
+            android:layout_weight="0.06" />
 
         <Button
-            android:layout_width="77dp"
+            android:layout_width="wrap_content"
             android:layout_height="70dp"
             android:text="Invoer"
             android:id="@+id/button10"
@@ -41,7 +43,7 @@
             android:textSize="10dp" />
 
         <Button
-            android:layout_width="77dp"
+            android:layout_width="wrap_content"
             android:layout_height="70dp"
             android:text="Overzicht"
             android:id="@+id/button11"
@@ -51,16 +53,6 @@
             android:onClick="clickOverzichtscherm"
             android:textSize="10dp" />
 
-        <Button
-            android:layout_width="77dp"
-            android:layout_height="70dp"
-            android:text="Vakdetail"
-            android:id="@+id/button12"
-            android:layout_margin="5dp"
-            android:layout_gravity="center"
-            android:onClick="clickVakdetailscherm"
-            android:enabled="false"
-            android:textSize="10dp" />
     </TableRow>
 
     <FrameLayout
@@ -71,7 +63,7 @@
 
         <GridLayout
             android:layout_width="match_parent"
-            android:layout_height="116dp">
+            android:layout_height="285dp">
 
             <TextView
                 android:layout_width="wrap_content"
@@ -84,22 +76,23 @@
 
             <TextView
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="period"
-                android:id="@+id/classPeriod"
+                android:layout_height="35dp"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:text="Periode: "
+                android:id="@+id/textViewPeriode"
                 android:layout_row="1"
                 android:layout_column="0" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="ects"
-                android:id="@+id/classEcts"
-                android:layout_row="3"
-                android:layout_column="0" />
+                android:text="period"
+                android:id="@+id/classPeriod"
+                android:layout_row="1"
+                android:layout_column="1" />
 
             <EditText
-                android:layout_width="wrap_content"
+                android:layout_width="72dp"
                 android:layout_height="wrap_content"
                 android:inputType="number|numberDecimal"
                 android:ems="10"
@@ -128,6 +121,23 @@
                 android:clickable="true"
                 android:layout_row="2"
                 android:layout_column="4" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:text="Aantal ECTS: "
+                android:id="@+id/textView"
+                android:layout_row="3"
+                android:layout_column="0" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="ects"
+                android:id="@+id/classEcts"
+                android:layout_row="3"
+                android:layout_column="1" />
         </GridLayout>
     </FrameLayout>
 </RelativeLayout>

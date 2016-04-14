@@ -53,9 +53,10 @@
 
     <TableLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="285dp"
         android:layout_below="@+id/tableRow"
-        android:layout_alignParentStart="true">
+        android:layout_alignParentStart="true"
+        android:layout_alignParentEnd="true">
 
         <TableRow
             android:layout_width="match_parent"
@@ -76,21 +77,23 @@
                 android:id="@+id/currentYear"
                 android:layout_column="3" />
 
+        </TableRow>
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
             <EditText
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:inputType="textPersonName"
                 android:ems="10"
                 android:id="@+id/editText"
-                android:layout_column="8"
+                android:layout_column="3"
                 android:editable="true"
                 android:singleLine="false"
                 android:hint="Voer uw naam in" />
         </TableRow>
-
-        <TableRow
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"></TableRow>
 
         <TableRow
             android:layout_width="match_parent"
@@ -122,7 +125,8 @@
                 android:layout_height="wrap_content"
                 android:textAppearance="?android:attr/textAppearanceMedium"
                 android:id="@+id/ectsContent"
-                android:layout_column="3" />
+                android:layout_column="3"
+                android:layout_span="6" />
         </TableRow>
 
         <TableRow
@@ -143,7 +147,7 @@
                 android:textAppearance="?android:attr/textAppearanceLarge"
                 android:id="@+id/studieAdvies"
                 android:layout_column="1"
-                android:layout_span="7" />
+                android:layout_span="8" />
         </TableRow>
     </TableLayout>
 

@@ -20,7 +20,7 @@
         android:id="@+id/tableRow4" >
 
         <Button
-            android:layout_width="77dp"
+            android:layout_width="wrap_content"
             android:layout_height="70dp"
             android:text="Hoofdscherm"
             android:id="@+id/button13"
@@ -31,7 +31,7 @@
             android:textSize="10dp" />
 
         <Button
-            android:layout_width="77dp"
+            android:layout_width="wrap_content"
             android:layout_height="70dp"
             android:text="Invoer"
             android:id="@+id/button14"
@@ -43,7 +43,7 @@
             android:textSize="10dp" />
 
         <Button
-            android:layout_width="77dp"
+            android:layout_width="wrap_content"
             android:layout_height="70dp"
             android:text="Overzicht"
             android:id="@+id/button15"

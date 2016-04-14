@@ -129,7 +129,7 @@ public class Vakdetailscherm extends AppCompatActivity implements OnClickListene
         DecimalFormat decimalGrade = new DecimalFormat("0.0");
         try {
             //get grade from text
-            if (classGrade < 1 || classGrade > 10) {
+            if (classGrade < 0 || classGrade > 10) {
                 Log.d("ClassGrade", "Not between 1 and 10" + classGrade);
 
                 AlertDialog.Builder alertDiaglogBuilder = new AlertDialog.Builder(this);
