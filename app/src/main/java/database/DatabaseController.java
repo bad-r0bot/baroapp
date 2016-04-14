@@ -11,6 +11,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 import android.database.sqlite.SQLiteStatement;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.List;
@@ -22,7 +23,7 @@ import models.User;
 public class DatabaseController extends SQLiteOpenHelper{
 
         private static final int DATABASE_VERSION = 1;
-        private static final String DATABASE_NAME = "barometer_db5";
+        private static final String DATABASE_NAME = "barometer_db6";
         private static final String TABLE_USERS = "users";
         private static final String TABLE_COURSES = "courses";
         private List<GregorianCalendar> periods;
@@ -123,7 +124,7 @@ public class DatabaseController extends SQLiteOpenHelper{
 
         public boolean attendenceIsInitialisedForUser(User user){
             SQLiteDatabase db = this.getReadableDatabase();
-            Cursor cursor = db.rawQuery("SELECT * FROM attendances WHERE user_id = "+user.getId()+";", null);
+            Cursor cursor = db.rawQuery("SELECT * FROM attendances WHERE user_id = " + user.getId() + ";", null);
             int i = 0;
 
             while(cursor.moveToNext()){
@@ -137,7 +138,7 @@ public class DatabaseController extends SQLiteOpenHelper{
 
         public void initAttendance(User user){
             for(Course course: getAllCourses()){
-                double grade = 1.0;
+                double grade = 0.0;
                 storeAttendance(user, course, Double.valueOf(grade));
             }
         }
@@ -147,8 +148,8 @@ public class DatabaseController extends SQLiteOpenHelper{
             SQLiteStatement stmt = db.compileStatement("INSERT INTO courses( name, period, ects)" +
                     "VALUES(?,?,?)");
             stmt.bindString(1, course.getCourseName());
-            stmt.bindLong(3, course.getPeriod());
-            stmt.bindLong(2, course.getEcts());
+            stmt.bindLong(2, course.getPeriod());
+            stmt.bindLong(3, course.getEcts());
             stmt.execute();
             db.close();
         }
@@ -166,7 +167,7 @@ public class DatabaseController extends SQLiteOpenHelper{
                 stmt2.execute();
             }
             catch(Exception e){
-                throw new RuntimeException("AAAH TRUNCATING THIS SHIT"+e.getMessage());
+                throw new RuntimeException(e.getMessage());
             }
             db.close();
         }
@@ -185,13 +186,12 @@ public class DatabaseController extends SQLiteOpenHelper{
 */
         public Course getCourse(int id) {
             SQLiteDatabase db = this.getReadableDatabase();
-            Cursor cursor = db.rawQuery("SELECT * FROM courses where id = " + id + ";", null);
+            Cursor cursor = db.rawQuery("SELECT * FROM courses where course_id = " + id + ";", null);
             if(cursor.moveToFirst()) {
-                return new Course(cursor.getInt(1), cursor.getString(2), cursor.getInt(3), cursor.getInt(4));
+                return new Course(cursor.getInt(0), cursor.getString(1), cursor.getInt(2), cursor.getInt(3                                     ));
             } else {
                 return null;
             }
-
         }
 
         public Map<Course, Double > getCoursesForUser(User u) {
@@ -264,7 +264,7 @@ public class DatabaseController extends SQLiteOpenHelper{
         public Double getGrade(User user, Course course) {
             SQLiteDatabase db = this.getReadableDatabase();
 
-            Cursor cursor = db.rawQuery("SELECT * FROM attendances WHERE user_id = " + user.getId() + " AND course_id = "+ course.getId() +";", null);
+            Cursor cursor = db.rawQuery("SELECT * FROM attendances WHERE user_id = " + user.getId() + " AND course_id = " + course.getId() + ";", null);
             try {
                 if (cursor != null) {
                     cursor.moveToFirst();
@@ -288,5 +288,91 @@ public class DatabaseController extends SQLiteOpenHelper{
             return grades.containsKey(course);
         }
 
+        public int getMissedEcts(User user){
+            SQLiteDatabase db = this.getReadableDatabase();
+            Cursor cursor = db.rawQuery("SELECT * FROM attendances WHERE user_id = " + user.getId() + " AND grade = 0.0 ;", null);
+
+            int total = 0;
+
+            while(cursor.moveToNext()){
+                Course course = this.getCourse(cursor.getInt(0));
+                if(course.getPeriod() < getCurrentPeriod()) {
+                    total += this.getCourse(cursor.getInt(0)).getEcts();
+                }
+            }
+            return total;
+        }
+
+        public int getFailedEcts(User user){
+            SQLiteDatabase db = this.getReadableDatabase();
+            Cursor cursor = db.rawQuery("SELECT * FROM attendances WHERE user_id = " + user.getId() + " AND grade BETWEEN 1.0 AND 5.4 ;", null);
+
+            int total = 0;
+
+            while(cursor.moveToNext()){
+                total += this.getCourse(cursor.getInt(0)).getEcts();
+            }
+            return total;
+        }
+
+        public int getTotalEcts(User user){
+            SQLiteDatabase db = this.getReadableDatabase();
+            Cursor cursor = db.rawQuery("SELECT * FROM attendances WHERE user_id = " + user.getId() + " AND grade > 5.4;", null);
+
+            int total = 0;
+
+            while(cursor.moveToNext()){
+                total += this.getCourse(cursor.getInt(0)).getEcts();
+            }
+            return total;
+        }
+
+        public int getRequiredEcts(User user){
+            return 60 - getTotalEcts(user);
+        }
+
+        public int getRemainingEcts(User user){
+            int ects = 0;
+            for(Course c : getRemainingCourses()){
+                ects += c.getEcts();
+            }
+            return ects;
+        }
+
+        public List<Course> getRemainingCourses(){
+            SQLiteDatabase db = this.getReadableDatabase();
+            Cursor cursor = db.rawQuery("SELECT * FROM courses WHERE period >= " + (getCurrentPeriod())+ ";", null);
+            List<Course> courses = new ArrayList<Course>();
+            while(cursor.moveToNext()){
+                courses.add(new Course(cursor.getInt(0), cursor.getString(1), cursor.getInt(2), cursor.getInt(3)));
+            }
+            return courses;
+        }
+
+    public int getCurrentWeek(){
+        Calendar calendar = new GregorianCalendar();
+        calendar.set(Calendar.YEAR,2015);
+        return calendar.get(Calendar.WEEK_OF_YEAR)-1;
+    }
+
+    public int getCurrentPeriod(){
+        int currentWeek = getCurrentWeek();
+
+        if(currentWeek>35 && currentWeek < 47) {
+            return 1;
+        }
+        else if(((currentWeek>46&&currentWeek<52)||(currentWeek>0&&currentWeek<8))){
+            return 2;
+        }
+        else  if(currentWeek>7 && currentWeek < 18){
+            return 3;
+        }
+        else if(currentWeek>17 && currentWeek < 29){
+            return 4;
+        }
+        else{
+            return 5;
+        }
+    }
     }
 

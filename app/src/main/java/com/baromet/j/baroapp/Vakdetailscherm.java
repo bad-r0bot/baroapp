@@ -64,11 +64,8 @@ public class Vakdetailscherm extends AppCompatActivity implements OnClickListene
         });
 
         Intent intent = getIntent();
-
         String itemString = intent.getStringExtra("json_object");
-
         dbc = new DatabaseController(getBaseContext());
-
         try {
             jsonItem = new JSONObject(itemString);
         } catch (JSONException e) {
@@ -89,17 +86,11 @@ public class Vakdetailscherm extends AppCompatActivity implements OnClickListene
         EditText gradeView = (EditText) findViewById(R.id.cijferText);
         TextView ectsView = (TextView) findViewById(R.id.classEcts);
 
-
-        try {
             int i  = dbc.getAllCourses().size();
             classView.setText(course.getCourseName());
             periodView.setText(""+course.getPeriod());
             gradeView.setText(""+dbc.getGrade(user, course));
-            ectsView.setText(jsonItem.getString("ects"));
-
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
+            ectsView.setText(""+course.getEcts());
 
     }
 
@@ -115,6 +106,19 @@ public class Vakdetailscherm extends AppCompatActivity implements OnClickListene
         if (gradeIsValid()) {
 
             dbc.updateAttendance(user, course, Double.parseDouble(gradeView.getText().toString()));
+
+            AlertDialog.Builder alertDiaglogBuilder = new AlertDialog.Builder(this);
+            //set title
+            alertDiaglogBuilder.setTitle("Cijfer opgeslagen.");
+            //set message
+            alertDiaglogBuilder.setMessage("De cijfer is gewijzigd naar " + Double.parseDouble(gradeView.getText().toString()) + ".")
+                    .setCancelable(true);
+            alertDiaglogBuilder.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int which) {
+                    // continue
+                }
+            })
+                    .show();
         }
     }
 
@@ -158,21 +162,19 @@ public class Vakdetailscherm extends AppCompatActivity implements OnClickListene
     //method to save grade
 
     public void clickHoofdscherm(View v) {
-        //Go to hoofdscherm
-        Button button9 = (Button) v;
         startActivity(new Intent(Vakdetailscherm.this, Hoofdscherm.class));
     }
 
     public void clickInvoerscherm(View v) {
-        //Go to invoerscherm
-        Button button10 = (Button) v;
-        startActivity(new Intent(Vakdetailscherm.this, Invoerscherm.class));
+        Intent intent = new Intent(Vakdetailscherm.this, Invoerscherm.class);
+        intent.putExtra("userId", user.getId());
+        startActivity(intent);
     }
 
     public void clickOverzichtscherm(View v) {
-        //Go to overzichtscherm
-        Button button11 = (Button) v;
-        startActivity(new Intent(Vakdetailscherm.this, Overzichtscherm.class));
+        Intent intent = new Intent(Vakdetailscherm.this, Overzichtscherm.class);
+        intent.putExtra("userId", user.getId());
+        startActivity(intent);
     }
 
     public void clickVakdetailscherm(View v) {

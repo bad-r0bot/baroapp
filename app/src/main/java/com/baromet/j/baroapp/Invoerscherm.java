@@ -1,40 +1,39 @@
  package com.baromet.j.baroapp;
 
  import android.app.ProgressDialog;
- import android.content.Context;
- import android.content.Intent;
- import android.net.Uri;
- import android.os.AsyncTask;
- import android.os.Bundle;
- import android.support.v7.app.AppCompatActivity;
- import android.util.Log;
- import android.view.View;
- import android.widget.AdapterView;
- import android.widget.Button;
- import android.widget.ListView;
- import android.widget.Toast;
+import android.content.Context;
+import android.content.Intent;
+import android.net.Uri;
+import android.os.AsyncTask;
+import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.Button;
+import android.widget.ListView;
 
- import com.google.android.gms.appindexing.Action;
- import com.google.android.gms.appindexing.AppIndex;
- import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.appindexing.Action;
+import com.google.android.gms.appindexing.AppIndex;
+import com.google.android.gms.common.api.GoogleApiClient;
 
- import org.apache.http.HttpEntity;
- import org.apache.http.HttpResponse;
- import org.apache.http.client.HttpClient;
- import org.apache.http.client.methods.HttpPost;
- import org.apache.http.impl.client.DefaultHttpClient;
- import org.apache.http.util.EntityUtils;
- import org.json.JSONArray;
- import org.json.JSONException;
- import org.json.JSONObject;
+import org.apache.http.HttpEntity;
+import org.apache.http.HttpResponse;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.util.EntityUtils;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
- import java.io.IOException;
- import java.io.Reader;
+import java.io.IOException;
+import java.io.Reader;
 
- import adapters.JsonListAdapter;
- import database.DatabaseController;
- import models.Course;
- import models.User;
+import adapters.JsonListAdapter;
+import database.DatabaseController;
+import models.Course;
+import models.User;
 
  public class Invoerscherm extends AppCompatActivity implements OnClickListener {
 
@@ -199,9 +198,6 @@
         progressDialog.dismiss();
         Log.d("Progress END", "Ending progress dialog.");
 
-
-            Toast toast = Toast.makeText(context, "items: "+result.length()+"\nfirstId: "+first.getId(), Toast.LENGTH_LONG);
-            toast.show();
         }
     }
 
@@ -232,11 +228,9 @@
     }
 
     public void clickOverzichtscherm(View v) {
-        //Go to overzichtscherm which can't happen because you are already here.
-        Button button15 = (Button) v;
-        startActivity(new Intent(Invoerscherm.this, Overzichtscherm.class));
-
-
+        Intent intent = new Intent(Invoerscherm.this, Overzichtscherm.class);
+        intent.putExtra("userId", user.getId());
+        startActivity(intent);
     }
 
     public void clickVakdetailscherm(View v) {
