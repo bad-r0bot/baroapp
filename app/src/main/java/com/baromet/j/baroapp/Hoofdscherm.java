@@ -20,7 +20,7 @@ import java.util.Calendar;
 import database.DatabaseController;
 import models.User;
 
-public class Hoofdscherm extends AppCompatActivity implements OnClickListener, TextWatcher{
+public class Hoofdscherm extends AppCompatActivity implements OnClickListener, TextWatcher {
 
     TextView currentYear;
     TextView ectsContent;
@@ -48,7 +48,6 @@ public class Hoofdscherm extends AppCompatActivity implements OnClickListener, T
         nameField.addTextChangedListener(this);
 
 
-
         overzichtButton = (Button) findViewById(R.id.overzichtButton);
         overzichtButton.setEnabled(false);
 
@@ -67,12 +66,11 @@ public class Hoofdscherm extends AppCompatActivity implements OnClickListener, T
         currentYear.setText(new StringBuilder()
                 // Current year-1 to current year. eg 2015-2016
                 .append(yy - 1).append(" ").append("-").append(yy));
-        this.setTitle("BaroApp: Het is nu periode: "+ dbc.getCurrentPeriod()+", week: " + dbc.getCurrentWeek());
+        this.setTitle("BaroApp: Het is nu periode: " + dbc.getCurrentPeriod() + ", week: " + dbc.getCurrentWeek());
 
-        if(isNetworkAvailable(this)){
-
-        }
-        else{
+        if (isNetworkAvailable(this)) {
+            // All good. Continue.
+        } else {
             AlertDialog.Builder alertDiaglogBuilder = new AlertDialog.Builder(this);
             //set title
             alertDiaglogBuilder.setTitle("Geen internet");
@@ -84,24 +82,23 @@ public class Hoofdscherm extends AppCompatActivity implements OnClickListener, T
                     // continue
                 }
             })
-                    .show();
+            .show();
         }
     }
 
-    public void clickHoofdscherm(View v)    {
+    public void clickHoofdscherm(View v) {
         //Go to hoofdscherm which can't happen because you are already here.
         //loginButton=(Button) v;
         startActivity(new Intent(Hoofdscherm.this, Hoofdscherm.class));
     }
 
-    public void clickInvoerscherm(View v)
-    {
+    public void clickInvoerscherm(View v) {
         //Go to invoerscherm
         User user = dbc.getUserByName(nameField.getText().toString());
         Intent intent = new Intent(Hoofdscherm.this, Invoerscherm.class);
 
         //If user is unknown
-        if(user==null) {
+        if (user == null) {
             dbc.storeUser(new User(nameField.getText().toString()));
             user = dbc.getUserByName(nameField.getText().toString());
         }
@@ -110,14 +107,13 @@ public class Hoofdscherm extends AppCompatActivity implements OnClickListener, T
         startActivity(intent);
     }
 
-    public void clickOverzichtscherm(View v)
-    {
+    public void clickOverzichtscherm(View v) {
         //Go to invoerscherm
         User user = dbc.getUserByName(nameField.getText().toString());
         Intent intent = new Intent(Hoofdscherm.this, Overzichtscherm.class);
 
         //If user is unknown
-        if(user==null) {
+        if (user == null) {
             dbc.storeUser(new User(nameField.getText().toString()));
             user = dbc.getUserByName(nameField.getText().toString());
         }
@@ -138,44 +134,42 @@ public class Hoofdscherm extends AppCompatActivity implements OnClickListener, T
 
     @Override
     public void afterTextChanged(Editable s) {
-        if(nameField.getText().length()<1){
+        if (nameField.getText().length() < 1) {
             invoerButton.setEnabled(false);
             overzichtButton.setEnabled(false);
 
-        }else{
+        } else {
             invoerButton.setEnabled(true);
             overzichtButton.setEnabled(true);
         }
 
         User user = dbc.getUserByName(nameField.getText().toString());
 
-        if(user!=null){
-            ectsContent.setText(""+dbc.getTotalEcts(user));
+        if (user != null) {
+            ectsContent.setText("" + dbc.getTotalEcts(user));
             updateStudieAdvies(user);
-        }else{
+        } else {
             ectsContent.setText(" Type een gebruikersnaam in.");
         }
 
     }
 
-    private void updateStudieAdvies(User user){
+    private void updateStudieAdvies(User user) {
         int ects = dbc.getFailedEcts(user) + dbc.getMissedEcts(user);
-         if(ects > 20){
+        if (ects > 20) {
             studieAdvies.setText("Waarschuwing:Je krijgt een BSA!");
             studieAdvies.setTextColor(Color.RED);
-         }
-        else if(ects > 0 && ects <= 10){
+        } else if (ects > 0 && ects <= 10) {
             studieAdvies.setText("Geen BSA. Je mag door naar het volgend jaar.");
             studieAdvies.setTextColor(Color.YELLOW);
-        }
-        else if (ects == 0){
+        } else if (ects == 0) {
             studieAdvies.setText("Je hebt alle ECTS behaald!");
             studieAdvies.setTextColor(Color.GREEN);
         }
     }
 
-    public boolean isNetworkAvailable(final Context context) {
-        final ConnectivityManager connectivityManager = ((ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE));
-        return connectivityManager.getActiveNetworkInfo() != null && connectivityManager.getActiveNetworkInfo().isConnected();
+    public boolean isNetworkAvailable(Context context) {
+        ConnectivityManager cm = ((ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE));
+        return cm.getActiveNetworkInfo() != null && cm.getActiveNetworkInfo().isConnected();
     }
 }
